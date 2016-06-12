@@ -16,6 +16,7 @@ const {
   Component,
   computed,
   get,
+  getProperties,
   isBlank,
   isPresent,
   on,
@@ -37,6 +38,7 @@ export default Component.extend(EKMixin, {
 
   activeWordIndex: 0,
   classNames: ['lxl-container'],
+  hook: 'lxl_container',
 
   isInstant: or('instantWritePage', 'instantWriteText'),
 
@@ -114,12 +116,12 @@ export default Component.extend(EKMixin, {
   _turnPage() {
     const nextPageFirstWord = get(this, 'nextPageFirstWord');
 
+    set(this, 'currentPageFirstWord', nextPageFirstWord);
+
     this._scrollToWord(nextPageFirstWord);
 
-    if (isBlank(nextPageFirstWord)) {
-      if (this.attrs.onComplete) { this.attrs.onComplete(); }
-    } else {
-      set(this, 'currentPageFirstWord', nextPageFirstWord);
+    if (isBlank(nextPageFirstWord) && this.attrs.onComplete) {
+      this.attrs.onComplete();
     }
   },
 
@@ -137,11 +139,14 @@ export default Component.extend(EKMixin, {
   },
 
   findNextPageFirstWord() {
-    const wordElements = get(this, 'wordElements');
+    const {
+      currentPageLastWordIndex,
+      wordElements
+    } = getProperties(this, 'currentPageLastWordIndex', 'wordElements');
     const $container = this.$().parent();
     const offsetBottom = $container.offset().top + $container.height();
 
-    return wordElements.find((element) => {
+    return wordElements.slice(currentPageLastWordIndex + 1).find((element) => {
       const $element = this.$(element);
 
       return $element.offset().top + $element.height() >= offsetBottom;
@@ -194,6 +199,7 @@ export default Component.extend(EKMixin, {
     if ($word.css('opacity') === '1') { return; }
 
     if ((isBlank(nextPageFirstWord) && index < $words.length) || index < $words.index(nextPageFirstWord)) {
+      set(this, 'currentPageLastWordIndex', index);
       set(this, 'pageLoaded', false);
     } else if (!get(this, 'instantWriteText')) {
       setProperties(this, {
