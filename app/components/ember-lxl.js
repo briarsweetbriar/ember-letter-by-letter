@@ -1,0 +1,1 @@
+export { default } from 'ember-letter-by-letter/components/ember-lxl';
