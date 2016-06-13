@@ -19,7 +19,6 @@ const {
   getProperties,
   isBlank,
   isPresent,
-  on,
   set,
   setProperties
 } = Ember;
@@ -38,7 +37,6 @@ export default Component.extend(EKMixin, {
 
   activeWordIndex: 0,
   classNames: ['lxl-container'],
-  hook: 'lxl_container',
 
   isInstant: or('instantWritePage', 'instantWriteText'),
 
@@ -133,12 +131,12 @@ export default Component.extend(EKMixin, {
 
     $container.scrollTop(scrollTop);
 
-    set(this, 'nextPageFirstWord', this.findNextPageFirstWord());
+    set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
 
     this._writeWord($words.index($word));
   },
 
-  findNextPageFirstWord() {
+  _findNextPageFirstWord() {
     const {
       currentPageLastWordIndex,
       wordElements
@@ -245,7 +243,7 @@ export default Component.extend(EKMixin, {
 
       values.opacity = values.opacity ? values.opacity : { to: 1, from: 0 };
 
-      const tween = motion.tween({
+      motion.tween({
         values,
         duration: duration * rate
       }).on($letter[0]).start();
