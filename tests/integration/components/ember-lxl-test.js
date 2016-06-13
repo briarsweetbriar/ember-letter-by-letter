@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
+const { set } = Ember;
 const { run: { later } } = Ember;
 
 moduleForComponent('ember-lxl', 'Integration | Component | ember lxl', {
@@ -37,4 +38,54 @@ test('it gradually fades the characters in', function(assert) {
 
     done();
   }, 100);
+});
+
+test('it pauses once it reaches the bottom of the container', function(assert) {
+  assert.expect(7);
+
+  const done = assert.async();
+
+  set(this, 'completed', () => {
+    assert.ok(false, 'ran onComplete callback prematurely');
+  });
+
+  this.render(hbs`
+    <div style="width: 125px; height: 50px;">
+      {{ember-lxl
+        text="This is a really long sentance, but that's totally necessary!"
+        speed=10000000000
+        rate=0
+        onComplete=(action completed)
+      }}
+    </div>
+  `);
+
+  assert.equal(this.$('.lxl-word').length, 10, 'it immediately writes all words');
+  assert.equal(this.$('.lxl-letter').length, 4, 'it starts with this many characters wrapped');
+
+  later(() => {
+    assert.equal(this.$('.lxl-letter').length, 29, 'it continues wrapping characters');
+  }, 150);
+
+  later(() => {
+    assert.equal(this.$('.lxl-letter').length, 29, 'it has stopped wrapping characters');
+
+    this.$('.lxl-container').trigger('mouseup');
+
+    set(this, 'completed', () => {
+      assert.ok(true, 'ran onComplete callback at correct time');
+    });
+  }, 200);
+
+  later(() => {
+    assert.equal(this.$('.lxl-letter').length, 52, 'it has resumed wrapping characters');
+
+    this.$('.lxl-container').trigger('mouseup');
+  }, 350);
+
+  later(() => {
+    assert.equal(this.$('.lxl-letter').length, 52, 'it completes writing');
+
+    done();
+  }, 400);
 });
