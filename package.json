@@ -1,7 +1,7 @@
 {
   "name": "ember-letter-by-letter",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Write text letter by letter with Ember.js.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,7 +11,7 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/null-null-null/ember-letter-by-letter",
   "engines": {
     "node": ">= 0.10.0"
   },

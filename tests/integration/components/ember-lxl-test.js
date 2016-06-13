@@ -18,6 +18,24 @@ test('it parses words into word and letter spans', function(assert) {
   assert.equal(this.$('.lxl-word:first .lxl-letter').length, 5, 'it wraps characters into spans');
 });
 
+test('tags are respected', function(assert) {
+  assert.expect(7);
+
+  this.render(hbs`{{ember-lxl text="Outside <span id='span'>inside <strong id='strong'>bold</strong></span>"}}`);
+
+  assert.equal(this.$('.lxl-word').length, 3, 'it wraps words');
+
+  const $span = this.$('#span');
+  assert.equal($span.length, 1, 'span is present');
+  assert.equal($span.text().trim(), 'inside  bold', 'span contains the right text');
+  assert.ok($span.is('span'), 'span is correct element');
+
+  const $strong = this.$('#strong');
+  assert.equal($strong.length, 1, 'strong is present');
+  assert.equal($strong.text().trim(), 'bold', 'strong contains the right text');
+  assert.ok($strong.is('strong'), 'strong is correct element');
+});
+
 test('it gradually fades the characters in', function(assert) {
   assert.expect(5);
 
@@ -30,7 +48,7 @@ test('it gradually fades the characters in', function(assert) {
 
   later(() => {
     assert.ok(this.$('.lxl-letter:first').css('opacity') > this.$('.lxl-letter:last').css('opacity'), 'fades from first to last');
-  }, 10);
+  }, 20);
 
   later(() => {
     assert.equal(this.$('.lxl-letter:first').css('opacity'), 1, 'first becomes 1');
@@ -50,7 +68,7 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   });
 
   this.render(hbs`
-    <div style="width: 125px; height: 50px;">
+    <div style="width: 150px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
         speed=10000000000
@@ -64,28 +82,30 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   assert.equal(this.$('.lxl-letter').length, 4, 'it starts with this many characters wrapped');
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').length, 29, 'it continues wrapping characters');
-  }, 150);
+    assert.equal(this.$('.lxl-letter').length, 26, 'it continues wrapping characters');
+  }, 250);
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').length, 29, 'it has stopped wrapping characters');
+    assert.equal(this.$('.lxl-letter').length, 26, 'it has stopped wrapping characters');
 
     this.$('.lxl-container').trigger('mouseup');
 
     set(this, 'completed', () => {
       assert.ok(true, 'ran onComplete callback at correct time');
     });
-  }, 200);
+  }, 275);
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').length, 52, 'it has resumed wrapping characters');
+    assert.equal(this.$('.lxl-letter').length, 42, 'it has resumed wrapping characters');
 
     this.$('.lxl-container').trigger('mouseup');
-  }, 350);
+  }, 450);
 
   later(() => {
     assert.equal(this.$('.lxl-letter').length, 52, 'it completes writing');
 
+    this.$('.lxl-container').trigger('mouseup');
+
     done();
-  }, 400);
+  }, 700);
 });
