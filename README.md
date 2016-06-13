@@ -1,26 +1,14 @@
-# Ember-letter-by-letter
+[![npm version](https://badge.fury.io/js/ember-letter-by-letter.svg)](https://badge.fury.io/js/ember-letter-by-letter)
+[![Build Status](https://travis-ci.org/null-null-null/ember-letter-by-letter.svg?branch=master)](https://travis-ci.org/null-null-null/ember-letter-by-letter)
 
-This README outlines the details of collaborating on this Ember addon.
+# ember-letter-by-letter
+
+Write text letter by letter.
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+`ember install ember-letter-by-letter`
 
-## Running
+## Usage
 
-* `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+`{{ember-lxl text="Hey! I'm gonna get written letter by letter!"}}`
