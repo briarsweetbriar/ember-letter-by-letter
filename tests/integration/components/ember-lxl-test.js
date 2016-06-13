@@ -109,3 +109,42 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     done();
   }, 700);
 });
+
+
+test('text can be instawrote with a click', function(assert) {
+  assert.expect(2);
+
+  const done = assert.async();
+
+  this.render(hbs`
+    <div style="width: 150px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
+      {{ember-lxl
+        text="This is a really long sentance, but that's totally necessary!"
+      }}
+    </div>
+  `);
+
+  assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last word starts faded out');
+
+  later(() => {
+    this.$('.lxl-container').trigger('mouseup');
+  }, 25);
+
+  later(() => {
+    this.$('.lxl-container').trigger('mouseup');
+  }, 50);
+
+  later(() => {
+    this.$('.lxl-container').trigger('mouseup');
+  }, 75);
+
+  later(() => {
+    this.$('.lxl-container').trigger('mouseup');
+  }, 100);
+
+  later(() => {
+    assert.equal(this.$('.lxl-word:last').css('opacity'), 1, 'last word faded in');
+
+    done();
+  }, 125);
+});
