@@ -83,7 +83,7 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
 
   later(() => {
     assert.equal(this.$('.lxl-letter').length, 26, 'it continues wrapping characters');
-  }, 250);
+  }, 350);
 
   later(() => {
     assert.equal(this.$('.lxl-letter').length, 26, 'it has stopped wrapping characters');
@@ -93,13 +93,13 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     set(this, 'completed', () => {
       assert.ok(true, 'ran onComplete callback at correct time');
     });
-  }, 275);
+  }, 400);
 
   later(() => {
     assert.equal(this.$('.lxl-letter').length, 42, 'it has resumed wrapping characters');
 
     this.$('.lxl-container').trigger('mouseup');
-  }, 450);
+  }, 750);
 
   later(() => {
     assert.equal(this.$('.lxl-letter').length, 52, 'it completes writing');
@@ -107,7 +107,7 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     this.$('.lxl-container').trigger('mouseup');
 
     done();
-  }, 700);
+  }, 1000);
 });
 
 
