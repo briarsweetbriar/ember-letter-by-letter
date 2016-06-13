@@ -55,7 +55,7 @@ test('it gradually fades the characters in', function(assert) {
     assert.equal(this.$('.lxl-letter:last').css('opacity'), 1, 'last becomes 1');
 
     done();
-  }, 100);
+  }, 125);
 });
 
 test('it pauses once it reaches the bottom of the container', function(assert) {
