@@ -5,6 +5,7 @@ import {
   EKMixin
 } from 'ember-keyboard';
 
+const second = 1000;
 const lxlTagClass = 'lxl-tag';
 const wordClass = 'lxl-word';
 const letterClass = 'lxl-letter';
@@ -32,8 +33,8 @@ export default Component.extend(EKMixin, {
 
   keys: [],
   effect: {},
-  speed: 25,
-  rate: 25,
+  cps: 25,
+  tweenRate: 25,
 
   activeWordIndex: 0,
   classNames: ['lxl-container'],
@@ -133,7 +134,7 @@ export default Component.extend(EKMixin, {
 
     set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
 
-    this._writeWord($words.index($word));
+    this._processWord($words.index($word));
   },
 
   _findNextPageFirstWord() {
@@ -185,7 +186,7 @@ export default Component.extend(EKMixin, {
     }
   }).readOnly(),
 
-  _writeWord(index) {
+  _processWord(index) {
     const $words = get(this, '$words');
 
     if (isBlank($words)) { return; }
@@ -196,27 +197,35 @@ export default Component.extend(EKMixin, {
     // stop if the word has already been written
     if ($word.css('opacity') === '1') { return; }
 
-    if ((isBlank(nextPageFirstWord) && index < $words.length) || index < $words.index(nextPageFirstWord)) {
-      set(this, 'currentPageLastWordIndex', index);
+    const pageIsLoaded =
+      index >= $words.length ||
+      (isPresent(nextPageFirstWord) && index >= $words.index(nextPageFirstWord));
+
+    if (pageIsLoaded) {
+      this._markPageAsComplete(index);
+    } else {
       set(this, 'pageLoaded', false);
-    } else if (!get(this, 'instantWriteText')) {
-      setProperties(this, {
-        instantWritePage: false,
-        pageLoaded: true
-      });
 
-      // stop if past the last word in whole text or the last word on the current page
-      return;
-    } else if (index >= $words.length) {
-      set(this, 'pageLoaded', true);
-
-      return;
+      this._writeWord($word, index);
     }
+  },
 
+  _markPageAsComplete(currentPageLastWordIndex) {
+    setProperties(this, {
+      currentPageLastWordIndex,
+      pageLoaded: true
+    });
+
+    if (!get(this, 'instantWriteText')) {
+      set(this, 'instantWritePage', false);
+    }
+  },
+
+  _writeWord($word, index) {
     if ($word.hasClass(lxlTagClass)) {
       this._executeCustomTag($word.text(), index);
     } else if (get(this, 'isInstant')) {
-      this._writeWord(index + 1);
+      this._processWord(index + 1);
     } else {
       const letters = $word.text().split('');
 
@@ -228,34 +237,45 @@ export default Component.extend(EKMixin, {
   },
 
   _writeLetter($word, wordLength, characterIndex, wordIndex) {
-    if (get(this, 'isInstant')) {
-      const text = $word.text().trim();
+    if (get(this, 'isInstant')) { return this._shortCircuitWord($word, wordIndex); }
 
-      $word.html(text);
+    const { cpsRate, effect, tweenDuration } = getProperties(this, 'cpsRate', 'effect', 'tweenDuration');
+    const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
 
-      this._writeWord(wordIndex + 1);
-    } else {
-      const second = 1000;
-      const duration = second / get(this, 'speed');
-      const rate = get(this, 'rate');
-      const values = get(this, 'effect');
-      const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
+    effect.opacity = effect.opacity ? effect.opacity : { to: 1, from: 0 };
 
-      values.opacity = values.opacity ? values.opacity : { to: 1, from: 0 };
+    motion.tween({
+      values: effect,
+      duration: tweenDuration
+    }).on($letter[0]).start();
 
-      motion.tween({
-        values,
-        duration: duration * rate
-      }).on($letter[0]).start();
+    later(() => {
+      if (characterIndex + 1 < wordLength) {
+        this._writeLetter($word, wordLength, characterIndex + 1, wordIndex);
+      } else {
+        this._processWord(wordIndex + 1);
+      }
+    }, cpsRate);
+  },
 
-      later(() => {
-        if (characterIndex + 1 < wordLength) {
-          this._writeLetter($word, wordLength, characterIndex + 1, wordIndex);
-        } else {
-          this._writeWord(wordIndex + 1);
-        }
-      }, duration);
+  cpsRate: computed('cps', {
+    get() {
+      return second / get(this, 'cps');
     }
+  }),
+
+  tweenDuration: computed('cpsRate', 'tweenRate', {
+    get() {
+      return get(this, 'cpsRate') * get(this, 'tweenRate');
+    }
+  }),
+
+  _shortCircuitWord($word, wordIndex) {
+    const text = $word.text().trim();
+
+    $word.html(text);
+
+    this._processWord(wordIndex + 1);
   },
 
   _executeCustomTag(text, index) {

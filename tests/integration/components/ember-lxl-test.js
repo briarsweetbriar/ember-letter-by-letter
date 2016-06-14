@@ -41,7 +41,7 @@ test('it gradually fades the characters in', function(assert) {
 
   const done = assert.async();
 
-  this.render(hbs`{{ember-lxl text="Word." speed=100 rate=5}}`);
+  this.render(hbs`{{ember-lxl text="Word." cps=100 tweenRate=5}}`);
 
   assert.equal(this.$('.lxl-letter:first').css('opacity'), 0, 'first starts out 0');
   assert.equal(this.$('.lxl-letter:last').css('opacity'), 0, 'last starts out 0');
@@ -71,8 +71,8 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     <div style="width: 150px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
-        speed=10000000000
-        rate=0
+        cps=10000000000
+        tweenRate=0
         onComplete=(action completed)
       }}
     </div>
