@@ -146,5 +146,5 @@ test('text can be instawrote with a click', function(assert) {
     assert.equal(this.$('.lxl-word:last').css('opacity'), 1, 'last word faded in');
 
     done();
-  }, 125);
+  }, 150);
 });
