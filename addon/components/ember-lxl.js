@@ -152,6 +152,18 @@ export default Component.extend(EKMixin, {
     });
   },
 
+  cpsRate: computed('cps', {
+    get() {
+      return second / get(this, 'cps');
+    }
+  }),
+
+  tweenDuration: computed('cpsRate', 'tweenRate', {
+    get() {
+      return get(this, 'cpsRate') * get(this, 'tweenRate');
+    }
+  }),
+
   words: computed('text', {
     get() {
       // the first part of the regex matches html tags (eg, `<strong>`), the second part lxl-text-tags,
@@ -257,18 +269,6 @@ export default Component.extend(EKMixin, {
       }
     }, cpsRate);
   },
-
-  cpsRate: computed('cps', {
-    get() {
-      return second / get(this, 'cps');
-    }
-  }),
-
-  tweenDuration: computed('cpsRate', 'tweenRate', {
-    get() {
-      return get(this, 'cpsRate') * get(this, 'tweenRate');
-    }
-  }),
 
   _shortCircuitWord($word, wordIndex) {
     const text = $word.text().trim();
