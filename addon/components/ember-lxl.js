@@ -41,6 +41,24 @@ export default Component.extend(EKMixin, {
 
   isInstant: or('instantWritePage', 'instantWriteText'),
 
+  _notifyComplete() {
+    if (isPresent(this.attrs.onComplete)) {
+      this.attrs.onComplete();
+    }
+  },
+
+  _notifyPause() {
+    if (isPresent(this.attrs.onPause)) {
+      this.attrs.onPause();
+    }
+  },
+
+  _notifyResume() {
+    if (isPresent(this.attrs.onResume)) {
+      this.attrs.onResume();
+    }
+  },
+
   didInsertElement(...args) {
     this._super(...args);
 
@@ -119,8 +137,10 @@ export default Component.extend(EKMixin, {
 
     this._scrollToWord(nextPageFirstWord);
 
-    if (isBlank(nextPageFirstWord) && this.attrs.onComplete) {
-      this.attrs.onComplete();
+    if (isBlank(nextPageFirstWord)) {
+      this._notifyComplete();
+    } else {
+      this._notifyResume();
     }
   },
 
@@ -231,6 +251,8 @@ export default Component.extend(EKMixin, {
     if (!get(this, 'instantWriteText')) {
       set(this, 'instantWritePage', false);
     }
+
+    this._notifyPause();
   },
 
   _writeWord($word, index) {

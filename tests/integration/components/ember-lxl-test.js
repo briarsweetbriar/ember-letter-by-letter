@@ -59,12 +59,20 @@ test('it gradually fades the characters in', function(assert) {
 });
 
 test('it pauses once it reaches the bottom of the container', function(assert) {
-  assert.expect(7);
+  assert.expect(12);
 
   const done = assert.async();
 
   set(this, 'completed', () => {
     assert.ok(false, 'ran onComplete callback prematurely');
+  });
+
+  set(this, 'paused', () => {
+    assert.ok(true, 'ran onPause callback');
+  });
+
+  set(this, 'resumed', () => {
+    assert.ok(true, 'ran onResume callback');
   });
 
   this.render(hbs`
@@ -74,6 +82,8 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
         cps=10000000000
         tweenRate=0
         onComplete=(action completed)
+        onPause=(action paused)
+        onResume=(action resumed)
       }}
     </div>
   `);
