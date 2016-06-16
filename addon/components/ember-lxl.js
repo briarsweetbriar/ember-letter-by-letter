@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-lxl';
+import parseLxlTag from 'ember-letter-by-letter/utils/parse-lxl-tag';
 import {
   keyDown,
   EKMixin
@@ -17,6 +18,7 @@ const {
   Component,
   computed,
   get,
+  getOwner,
   getProperties,
   isBlank,
   isPresent,
@@ -24,7 +26,13 @@ const {
   setProperties
 } = Ember;
 
-const { String: { htmlSafe } } = Ember;
+const {
+  String: {
+    dasherized,
+    htmlSafe
+  }
+} = Ember;
+
 const { run: { later } } = Ember;
 const { or } = computed;
 
@@ -301,11 +309,9 @@ export default Component.extend(EKMixin, {
   },
 
   _executeCustomTag(text, index) {
-    const [, openingOrClosing, content] = text.match(/\(\((#|\/)(.*?)\)\)/);
-    const args = content.split(' ');
-    const tagName = args.shift();
-    const tag = this[tagName].create();
-    const method = openingOrClosing === '#' ? 'start' : 'stop';
+    const container = getOwner(this);
+    const { args, method, tagName } = parseLxlTag(text);
+    const tag = container.lookup(`lxl-tag:${dasherized(tagName)}`).create();
 
     tag[method](this, index, ...args.join(' ').split('|'));
   }
