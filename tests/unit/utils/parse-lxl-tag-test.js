@@ -62,7 +62,7 @@ test('`params` are split by spaces, unless in double quotes', function(assert) {
 test('`hash` is an object extracted from the params by =', function(assert) {
   assert.expect(1);
 
-  const result = parseLxlTag('((/foo simple=example aParam "string key"=string_key string_value="string value" anotherParam "strings everywhere"="key and value"))');
+  const result = parseLxlTag('((/foo simple=example aParam "string key"=string_key string_value="string value" anotherParam "strings everywhere"="key and value" "just a = param with an equal"))');
 
   assert.deepEqual(result.hash, {
     simple: 'example',
