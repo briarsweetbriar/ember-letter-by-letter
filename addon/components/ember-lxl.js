@@ -28,7 +28,6 @@ const {
 
 const {
   String: {
-    dasherized,
     htmlSafe
   }
 } = Ember;
@@ -310,9 +309,14 @@ export default Component.extend(EKMixin, {
 
   _executeCustomTag(text, index) {
     const container = getOwner(this);
-    const { args, method, tagName } = parseLxlTag(text);
-    const tag = container.lookup(`lxl-tag:${dasherized(tagName)}`).create();
+    const { hash, isClosing, isOpening, method, params, tagName } = parseLxlTag(text);
+    const activeTags = get(this, `activeTags.${tagName}`) || set(this, `activeTags.${tagName}`, Ember.A());
+    const tag = isClosing ? activeTags.popObject() : container.lookup(`lxl-tag:${tagName}`).create();
 
-    tag[method](this, index, ...args.join(' ').split('|'));
+    if (isOpening) {
+      activeTags.pushObject(tag);
+    }
+
+    tag[method](this, params, hash, index);
   }
 });

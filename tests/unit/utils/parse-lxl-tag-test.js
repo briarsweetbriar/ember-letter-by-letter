@@ -12,30 +12,33 @@ test('it grabs the tagName', function(assert) {
 });
 
 test('`method` is "start" if `#`', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
 
   const result = parseLxlTag('((#foo))');
 
-  assert.equal(result.method, 'start', 'method is correct');
+  assert.equal(result.method, 'open', 'method is correct');
   assert.ok(result.isOpening, '`isOpening` is true');
+  assert.ok(!result.isClosing, '`isClosing` is false');
 });
 
 test('`method` is "start" if none', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
 
   const result = parseLxlTag('((foo))');
 
-  assert.equal(result.method, 'start', 'method is correct');
+  assert.equal(result.method, 'execute', 'method is correct');
   assert.ok(!result.isOpening, '`isOpening` is false');
+  assert.ok(!result.isClosing, '`isClosing` is false');
 });
 
 test('`method` is "stop" if `/`', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
 
   const result = parseLxlTag('((/foo))');
 
-  assert.equal(result.method, 'stop', 'method is correct');
+  assert.equal(result.method, 'close', 'method is correct');
   assert.ok(!result.isOpening, '`isOpening` is false');
+  assert.ok(result.isClosing, '`isClosing` is true');
 });
 
 test('`params` are split by spaces', function(assert) {

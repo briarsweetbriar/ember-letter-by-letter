@@ -2,28 +2,44 @@ import { LXLTag } from 'ember-letter-by-letter';
 
 export default LXLTag.extend({
   /**
-    Provide a description of what your text tag does.
+    Called when a tag is opening, such as ((#<%= dasherizedModuleName %>))
 
-    @method start
+    @method open
     @param {Object} lxlContainer
+    @param {Array} params
+    @param {Object} hash
     @param {Number} index
-    @param {*} exampleParam
   */
 
-  start(lxlContainer, index) {
+  open(lxlContainer, params, hash, index) {
 
   },
 
   /**
-    Provide a description of what your text closing tag does.
+    Called when a tag is neither opening nor closing, such as ((<%= dasherizedModuleName %>))
 
-    @method stop
+    @method execute
     @param {Object} lxlContainer
+    @param {Array} params
+    @param {Object} hash
     @param {Number} index
-    @param {*} exampleParam
   */
 
-  stop(lxlContainer, index) {
+  execute(lxlContainer, params, hash, index) {
+
+  },
+
+  /**
+    Called when a tag is closing, such as ((/<%= dasherizedModuleName %>))
+
+    @method close
+    @param {Object} lxlContainer
+    @param {Array} params
+    @param {Object} hash
+    @param {Number} index
+  */
+
+  close(lxlContainer, params, hash, index) {
 
   }
 });

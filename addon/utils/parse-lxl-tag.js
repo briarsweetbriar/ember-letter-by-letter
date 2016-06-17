@@ -32,15 +32,23 @@ function extractHash(params) {
   }, {});
 }
 
+function determineMethod(tagType) {
+  switch (tagType) {
+    case '#': return { isOpening: true, method: 'open' };
+    case '/': return { isClosing: true, method: 'close' };
+    default: return { method: 'execute' };
+  }
+}
+
 export default function parseLxlTag(text) {
-  const [, openingOrClosing, content] = text.match(/\(\((#|\/)?(.*?)\)\)/);
+  const [, tagType, content] = text.match(/\(\((#|\/)?(.*?)\)\)/);
+  const { isClosing, isOpening, method } = determineMethod(tagType);
   const { params, hash } = matchParamsAndHash(content);
   const tagName = params.shift();
-  const method = openingOrClosing === '/' ? 'stop' : 'start';
-  const isOpening = openingOrClosing === '#';
 
   return {
     hash,
+    isClosing,
     isOpening,
     method,
     params,
