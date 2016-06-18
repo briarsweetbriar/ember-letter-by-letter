@@ -2,9 +2,7 @@ import Ember from 'ember';
 import CPS from 'ember-letter-by-letter/lxl-tags/cps';
 import { module, test } from 'qunit';
 
-const {
-  get
-} = Ember;
+const { get } = Ember;
 
 module('Unit | LXLTag | cps');
 

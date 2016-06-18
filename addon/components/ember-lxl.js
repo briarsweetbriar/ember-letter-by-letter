@@ -47,7 +47,7 @@ export default Component.extend(EKMixin, {
   activeTags: {},
   classNames: ['lxl-container'],
 
-  isInstant: or('instantWritePage', 'instantWriteText'),
+  isInstant: or('instantWritePage', 'instant'),
 
   _notifyComplete() {
     if (isPresent(this.attrs.onComplete)) {
@@ -256,7 +256,7 @@ export default Component.extend(EKMixin, {
       pageLoaded: true
     });
 
-    if (!get(this, 'instantWriteText')) {
+    if (!get(this, 'instant')) {
       set(this, 'instantWritePage', false);
     }
 
