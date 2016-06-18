@@ -1,12 +1,21 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { initialize as initializeLxlTags } from 'ember-letter-by-letter';
 
-const { set } = Ember;
+const {
+  getOwner,
+  set
+} = Ember;
+
 const { run: { later } } = Ember;
 
 moduleForComponent('ember-lxl', 'Integration | Component | ember lxl', {
-  integration: true
+  integration: true,
+
+  beforeEach() {
+    initializeLxlTags(getOwner(this));
+  }
 });
 
 test('it parses words into word and letter spans', function(assert) {
@@ -34,6 +43,30 @@ test('tags are respected', function(assert) {
   assert.equal($strong.length, 1, 'strong is present');
   assert.equal($strong.text().trim(), 'bold', 'strong contains the right text');
   assert.ok($strong.is('strong'), 'strong is correct element');
+});
+
+test('it executes lxl-tags', function(assert) {
+  assert.expect(7);
+
+  const done = assert.async();
+
+  this.render(hbs`{{ember-lxl text="Slow ((#cps 1000000000))very fast, and it's still fast and fast fast fast((/cps)) slow." cps=10 tweenRate=5}}`);
+
+  assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first starts out 0');
+  assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');
+
+  later(() => {
+    assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first word faded in');
+    assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 0, 'second still not faded in');
+  }, 400);
+
+  later(() => {
+    assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 1, 'second word faded in');
+    assert.equal(this.$('.lxl-word:nth(10)').css('opacity'), 1, 'last fast word faded in');
+    assert.ok(parseFloat(this.$('.lxl-word:last .lxl-letter:last').css('opacity')) < 1, 'last letter not faded in');
+
+    done();
+  }, 800);
 });
 
 test('it gradually fades the characters in', function(assert) {

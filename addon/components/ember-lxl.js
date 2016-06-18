@@ -44,6 +44,7 @@ export default Component.extend(EKMixin, {
   tweenRate: 25,
 
   activeWordIndex: 0,
+  activeTags: {},
   classNames: ['lxl-container'],
 
   isInstant: or('instantWritePage', 'instantWriteText'),
@@ -317,6 +318,8 @@ export default Component.extend(EKMixin, {
       activeTags.pushObject(tag);
     }
 
-    tag[method](this, params, hash, index);
+    tag[method](this, params, hash).then(() => {
+      this._processWord(index + 1);
+    });
   }
 });
