@@ -1,6 +1,19 @@
+@import "settings";
+@import "foundation";
+@include foundation-everything;
+
 @import "ember-lxl/ember-lxl";
 
 .lxl-outer-container {
   width: 600px;
   height: 400px;
+}
+
+.ember-expanding-sidebar {
+  @extend .menu;
+  @extend .vertical;
+
+  .ember-expanding-sidebar {
+    margin-left: 10px;
+  }
 }
