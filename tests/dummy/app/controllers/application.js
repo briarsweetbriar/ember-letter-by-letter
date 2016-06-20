@@ -31,4 +31,4 @@ export default Controller.extend({
       route: 'instant'
     }]
   }]
-})
+});

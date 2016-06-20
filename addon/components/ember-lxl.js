@@ -1,25 +1,11 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-lxl';
+import addClassTo from 'ember-letter-by-letter/utils/add-class-to';
 import parseLxlTag from 'ember-letter-by-letter/utils/parse-lxl-tag';
 import {
   keyDown,
   EKMixin
 } from 'ember-keyboard';
-
-function addClassTo(classNames, string) {
-  if (string.charAt(1) === '/') { return string; }
-
-  const index = string.indexOf('class=');
-  const classString = classNames.join(' ');
-
-  if (index > -1) {
-    const indexEnd = index + 7;
-
-    return `${string.slice(0, indexEnd)}${classString} ${string.slice(indexEnd)}`;
-  } else {
-    return `${string.slice(0, -1)} class="${classString}">`;
-  }
-}
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
@@ -350,6 +336,6 @@ export default Component.extend(EKMixin, {
     motion.tween({
       values: effect,
       duration: tweenDuration
-    }).on($element[0]).start()
+    }).on($element[0]).start();
   }
 });

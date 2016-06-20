@@ -32,7 +32,7 @@ test('tags are respected', function(assert) {
 
   this.render(hbs`{{ember-lxl text="Outside <span id='span'>inside <strong id='strong'>bold</strong></span>"}}`);
 
-  assert.equal(this.$('.lxl-word').length, 3, 'it wraps words');
+  assert.equal(this.$('.lxl-word').length, 5, 'it wraps words');
 
   const $span = this.$('#span');
   assert.equal($span.length, 1, 'span is present');
@@ -46,7 +46,7 @@ test('tags are respected', function(assert) {
 });
 
 test('it executes lxl-tags', function(assert) {
-  assert.expect(7);
+  assert.expect(5);
 
   const done = assert.async();
 
@@ -56,17 +56,12 @@ test('it executes lxl-tags', function(assert) {
   assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');
 
   later(() => {
-    assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first word faded in');
-    assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 0, 'second still not faded in');
-  }, 400);
-
-  later(() => {
     assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 1, 'second word faded in');
     assert.equal(this.$('.lxl-word:nth(10)').css('opacity'), 1, 'last fast word faded in');
     assert.ok(parseFloat(this.$('.lxl-word:last .lxl-letter:last').css('opacity')) < 1, 'last letter not faded in');
 
     done();
-  }, 800);
+  }, 1000);
 });
 
 test('it gradually fades the characters in', function(assert) {
@@ -109,7 +104,7 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   });
 
   this.render(hbs`
-    <div style="width: 150px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
+    <div style="width: 250px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
         cps=10000000000
@@ -125,11 +120,11 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   assert.equal(this.$('.lxl-letter').length, 4, 'it starts with this many characters wrapped');
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').length, 26, 'it continues wrapping characters');
+    assert.equal(this.$('.lxl-letter').length, 17, 'it continues wrapping characters');
   }, 350);
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').length, 26, 'it has stopped wrapping characters');
+    assert.equal(this.$('.lxl-letter').length, 17, 'it has stopped wrapping characters');
 
     this.$('.lxl-container').trigger('mouseup');
 
@@ -160,7 +155,7 @@ test('text can be instawrote with a click', function(assert) {
   const done = assert.async();
 
   this.render(hbs`
-    <div style="width: 150px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
+    <div style="width: 250px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
       }}
