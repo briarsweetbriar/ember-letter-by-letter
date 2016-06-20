@@ -6,8 +6,24 @@ import {
   EKMixin
 } from 'ember-keyboard';
 
+function addClassTo(classNames, string) {
+  if (string.charAt(1) === '/') { return string; }
+
+  const index = string.indexOf('class=');
+  const classString = classNames.join(' ');
+
+  if (index > -1) {
+    const indexEnd = index + 7;
+
+    return `${string.slice(0, indexEnd)}${classString} ${string.slice(indexEnd)}`;
+  } else {
+    return `${string.slice(0, -1)} class="${classString}">`;
+  }
+}
+
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
+const lxlDomClass = 'lxl-dom-element';
 const wordClass = 'lxl-word';
 const letterClass = 'lxl-letter';
 
@@ -206,7 +222,7 @@ export default Component.extend(EKMixin, {
     get() {
       return htmlSafe(get(this, 'words').map((word) => {
         // test if the word is actually a tag
-        return new RegExp(htmlTagRegex).test(word) ? word :
+        return new RegExp(htmlTagRegex).test(word) ? addClassTo([lxlDomClass, wordClass], word) :
           new RegExp(lxlTagRegex).test(word) ?
           `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>` :
           `<span class="${wordClass}">${word}</span>`;
@@ -216,7 +232,7 @@ export default Component.extend(EKMixin, {
 
   $words: computed('formattedText', {
     get() {
-      return this.$(`span.${wordClass}`);
+      return this.$(`.${wordClass}`);
     }
   }).readOnly(),
 
@@ -266,6 +282,8 @@ export default Component.extend(EKMixin, {
   _writeWord($word, index) {
     if ($word.hasClass(lxlTagClass)) {
       this._executeCustomTag($word.text(), index);
+    } else if ($word.hasClass(lxlDomClass)) {
+      this._executeDomTag($word, index);
     } else if (get(this, 'isInstant')) {
       this._processWord(index + 1);
     } else {
@@ -281,15 +299,10 @@ export default Component.extend(EKMixin, {
   _writeLetter($word, wordLength, characterIndex, wordIndex) {
     if (get(this, 'isInstant')) { return this._shortCircuitWord($word, wordIndex); }
 
-    const { cpsRate, effect, tweenDuration } = getProperties(this, 'cpsRate', 'effect', 'tweenDuration');
+    const cpsRate = get(this, 'cpsRate');
     const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
 
-    effect.opacity = effect.opacity ? effect.opacity : { to: 1, from: 0 };
-
-    motion.tween({
-      values: effect,
-      duration: tweenDuration
-    }).on($letter[0]).start();
+    this._tween($letter);
 
     later(() => {
       if (characterIndex + 1 < wordLength) {
@@ -321,5 +334,22 @@ export default Component.extend(EKMixin, {
     tag[method](this, params, hash).then(() => {
       this._processWord(index + 1);
     });
+  },
+
+  _executeDomTag($tag, index) {
+    this._tween($tag);
+
+    this._processWord(index + 1);
+  },
+
+  _tween($element) {
+    const { effect, tweenDuration } = getProperties(this, 'effect', 'tweenDuration');
+
+    effect.opacity = effect.opacity ? effect.opacity : { to: 1, from: 0 };
+
+    motion.tween({
+      values: effect,
+      duration: tweenDuration
+    }).on($element[0]).start()
   }
 });

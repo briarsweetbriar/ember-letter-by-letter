@@ -5,12 +5,15 @@
 
   .lxl-body {
     padding-bottom: 100%;
+
+    .lxl-dom-element, .lxl-word, .lxl-letter {
+      opacity: 0;
+    }
   }
 }
 
 .lxl-word, .lxl-letter {
   display: inline-block;
-  opacity: 0;
 }
 
 .lxl-tag {
