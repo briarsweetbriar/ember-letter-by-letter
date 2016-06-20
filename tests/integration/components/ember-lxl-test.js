@@ -50,7 +50,7 @@ test('it executes lxl-tags', function(assert) {
 
   const done = assert.async();
 
-  this.render(hbs`{{ember-lxl text="Slow ((#cps 1000000000))very fast, and it's still fast and fast fast fast((/cps)) slow." cps=10 tweenRate=5}}`);
+  this.render(hbs`{{ember-lxl text="Slow [[#cps 1000000000]]very fast, and it's still fast and fast fast fast[[/cps]] slow." cps=10 tweenRate=5}}`);
 
   assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first starts out 0');
   assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');

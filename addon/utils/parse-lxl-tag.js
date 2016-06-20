@@ -41,7 +41,7 @@ function determineMethod(tagType) {
 }
 
 export default function parseLxlTag(text) {
-  const [, tagType, content] = text.match(/\(\((#|\/)?(.*?)\)\)/);
+  const [, tagType, content] = text.match(/\[\[(#|\/)?(.*?)\]\]/);
   const { isClosing, isOpening, method } = determineMethod(tagType);
   const { params, hash } = matchParamsAndHash(content);
   const tagName = params.shift();

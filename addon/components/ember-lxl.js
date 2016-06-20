@@ -14,7 +14,7 @@ const wordClass = 'lxl-word';
 const letterClass = 'lxl-letter';
 
 const htmlTagRegex = '<.*?>';
-const lxlTagRegex = '\\(\\([#\\/].*?\\)\\)';
+const lxlTagRegex = '\\[\\[[#\\/].*?\\]\\]';
 
 const {
   Component,
