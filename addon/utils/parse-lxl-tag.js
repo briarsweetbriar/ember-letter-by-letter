@@ -13,11 +13,7 @@ function parseString(string, index = 0, parentAccumulator = [], isHash = false) 
         index++;
       }
     } else if (char === ')') {
-      if (isHash) {
-        parentAccumulator.push(extractHash(arrayAccumulator));
-      } else {
-        parentAccumulator.push(arrayAccumulator);
-      }
+      pushToParent(parentAccumulator, arrayAccumulator, isHash);
 
       return [parentAccumulator, index + 1];
     } else {
@@ -43,12 +39,18 @@ function parseString(string, index = 0, parentAccumulator = [], isHash = false) 
       }
     }
   }
-    if (isHash) {
-      parentAccumulator.push(extractHash(arrayAccumulator));
-    } else {
-      parentAccumulator.push(arrayAccumulator);
-    }
+
+  pushToParent(parentAccumulator, arrayAccumulator, isHash);
+
   return [parentAccumulator, index];
+}
+
+function pushToParent(parentAccumulator, arrayAccumulator, isHash) {
+  if (isHash) {
+    parentAccumulator.push(extractHash(arrayAccumulator));
+  } else {
+    parentAccumulator.push(arrayAccumulator);
+  }
 }
 
 function getNextInstance(string, startIndex, chars) {
@@ -64,24 +66,6 @@ function getNextInstance(string, startIndex, chars) {
   return [string.substring(startIndex, index), index];
 }
 
-
-// function matchParamsAndHash(string) {
-//   let m;
-//   const re = /"([^"]*)"|'([^']*)'|=|[^\s"'=]+/g;
-//   const params = [];
-//
-//   while ((m = re.exec(string)) !== null) {
-//     if (m.index === re.lastIndex) {
-//       re.lastIndex++;
-//     }
-//     params.push(m[1] || m[2] || m[0]);
-//   }
-//
-//   const hash = extractHash(params);
-//
-//   return { hash, params };
-// }
-//
 function extractHash(params) {
   const indexes = params.reduce((indexes, param, index) => {
     if (param === '=') {
