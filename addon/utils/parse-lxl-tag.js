@@ -2,7 +2,7 @@ function parseString(string, index = 0, parentAccumulator = [], isHash = false) 
   let arrayAccumulator = [];
 
   while (index < string.length) {
-    let char = string.charAt(index);
+    const char = string.charAt(index);
 
     if (char === '(') {
       [arrayAccumulator, index] = handleOpenParenthesis(string, index, arrayAccumulator);
@@ -11,26 +11,7 @@ function parseString(string, index = 0, parentAccumulator = [], isHash = false) 
 
       break;
     } else {
-
-      let substring;
-
-      if (char === '"') {
-        [substring, index] = getNextInstance(string, index + 1, ['"']);
-        index++;
-      } else if (char === "'") {
-        [substring, index] = getNextInstance(string, index + 1, ["'"]);
-        index++;
-      } else if (char === '=') {
-        substring = '=';
-        index++;
-      } else {
-        [substring, index] = getNextInstance(string, index, [' ', ')', '=']);
-        if (string.charAt(index) === ' ') { index++; }
-      }
-
-      if (substring) {
-        arrayAccumulator.push(substring);
-      }
+      index = extractSubstring(string, char, index, arrayAccumulator);
     }
   }
 
@@ -47,6 +28,23 @@ function handleOpenParenthesis(string, index, arrayAccumulator) {
     case 'hash': return parseString(string, index + 5, arrayAccumulator, true);
     default: return [arrayAccumulator, index++];
   }
+}
+
+function extractSubstring(string, char, index, arrayAccumulator) {
+  let substring;
+
+  switch (char) {
+    case '"': [substring, index] = getNextInstance(string, index + 1, ['"']); index++; break;
+    case "'": [substring, index] = getNextInstance(string, index + 1, ["'"]); index++; break;
+    case '=': substring = '='; index++; break;
+    default: [substring, index] = getNextInstance(string, index, [' ', ')', '=']); if (string.charAt(index) === ' ') { index++; } break;
+  }
+
+  if (substring) {
+    arrayAccumulator.push(substring);
+  }
+
+  return index;
 }
 
 function pushToParent(parentAccumulator, arrayAccumulator, isHash) {
