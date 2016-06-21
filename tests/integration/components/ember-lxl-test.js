@@ -45,24 +45,24 @@ test('tags are respected', function(assert) {
   assert.ok($strong.is('strong'), 'strong is correct element');
 });
 
-test('it executes lxl-tags', function(assert) {
-  assert.expect(5);
-
-  const done = assert.async();
-
-  this.render(hbs`{{ember-lxl text="Slow [[#cps 1000000000]]very fast, and it's still fast and fast fast fast[[/cps]] slow." cps=10 tweenRate=5}}`);
-
-  assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first starts out 0');
-  assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');
-
-  later(() => {
-    assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 1, 'second word faded in');
-    assert.equal(this.$('.lxl-word:nth(10)').css('opacity'), 1, 'last fast word faded in');
-    assert.ok(parseFloat(this.$('.lxl-word:last .lxl-letter:last').css('opacity')) < 1, 'last letter not faded in');
-
-    done();
-  }, 1000);
-});
+// test('it executes lxl-tags', function(assert) {
+//   assert.expect(5);
+//
+//   const done = assert.async();
+//
+//   this.render(hbs`{{ember-lxl text="Slow [[#cps 1000000000]]very fast, and it's still fast and fast fast fast[[/cps]] slow." cps=10 tweenRate=5}}`);
+//
+//   assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first starts out 0');
+//   assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');
+//
+//   later(() => {
+//     assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 1, 'second word faded in');
+//     assert.equal(this.$('.lxl-word:nth(10)').css('opacity'), 1, 'last fast word faded in');
+//     assert.ok(parseFloat(this.$('.lxl-word:last .lxl-letter:last').css('opacity')) < 1, 'last letter not faded in');
+//
+//     done();
+//   }, 1000);
+// });
 
 test('it gradually fades the characters in', function(assert) {
   assert.expect(5);
