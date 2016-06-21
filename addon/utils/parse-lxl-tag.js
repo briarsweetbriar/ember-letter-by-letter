@@ -4,14 +4,7 @@ function parseString(string, index = 0, parentAccumulator = [], isHash = false) 
     var char = string.charAt(index);
 
     if (char === '(') {
-      const method = string.substring(index + 1, string.indexOf(' ', index));
-      if (method === 'array') {
-        [arrayAccumulator, index] = parseString(string, index + 6, arrayAccumulator);
-      } else if (method === 'hash') {
-        [arrayAccumulator, index] = parseString(string, index + 6, arrayAccumulator, true);
-      } else {
-        index++;
-      }
+      [arrayAccumulator, index] = handleOpenParenthesis(string, index, arrayAccumulator);
     } else if (char === ')') {
       pushToParent(parentAccumulator, arrayAccumulator, isHash);
 
@@ -43,6 +36,16 @@ function parseString(string, index = 0, parentAccumulator = [], isHash = false) 
   pushToParent(parentAccumulator, arrayAccumulator, isHash);
 
   return [parentAccumulator, index];
+}
+
+function handleOpenParenthesis(string, index, arrayAccumulator) {
+  const method = string.substring(index + 1, string.indexOf(' ', index));
+
+  switch (method) {
+    case 'array': return parseString(string, index + 6, arrayAccumulator);
+    case 'hash': return parseString(string, index + 5, arrayAccumulator, true);
+    default: return [arrayAccumulator, index++];
+  }
 }
 
 function pushToParent(parentAccumulator, arrayAccumulator, isHash) {
