@@ -1,13 +1,25 @@
-function parseString(string, index = 0, parentArrayAccumulator = [], arrayAccumulator = []) {
+function parseString(string, index = 0, parentAccumulator = [], isHash = false) {
+  let arrayAccumulator = [];
   while (index < string.length) {
     var char = string.charAt(index);
 
     if (char === '(') {
-      [arrayAccumulator, index] = parseString(string, index + 6, arrayAccumulator);
+      const method = string.substring(index + 1, string.indexOf(' ', index));
+      if (method === 'array') {
+        [arrayAccumulator, index] = parseString(string, index + 6, arrayAccumulator);
+      } else if (method === 'hash') {
+        [arrayAccumulator, index] = parseString(string, index + 6, arrayAccumulator, true);
+      } else {
+        index++;
+      }
     } else if (char === ')') {
-      parentArrayAccumulator.push(arrayAccumulator);
+      if (isHash) {
+        parentAccumulator.push(extractHash(arrayAccumulator));
+      } else {
+        parentAccumulator.push(arrayAccumulator);
+      }
 
-      return [parentArrayAccumulator, index + 1];
+      return [parentAccumulator, index + 1];
     } else {
 
       var substring;
@@ -18,8 +30,11 @@ function parseString(string, index = 0, parentArrayAccumulator = [], arrayAccumu
       } else if (char === "'") {
         [substring, index] = getNextInstance(string, index + 1, ["'"]);
         index++;
+      } else if (char === '=') {
+        substring = '=';
+        index++;
       } else {
-        [substring, index] = getNextInstance(string, index, [' ', ')']);
+        [substring, index] = getNextInstance(string, index, [' ', ')', '=']);
         if (string.charAt(index) === ' ') { index++; }
       }
 
@@ -28,8 +43,12 @@ function parseString(string, index = 0, parentArrayAccumulator = [], arrayAccumu
       }
     }
   }
-  parentArrayAccumulator.push(arrayAccumulator);
-  return [parentArrayAccumulator, index];
+    if (isHash) {
+      parentAccumulator.push(extractHash(arrayAccumulator));
+    } else {
+      parentAccumulator.push(arrayAccumulator);
+    }
+  return [parentAccumulator, index];
 }
 
 function getNextInstance(string, startIndex, chars) {
@@ -63,22 +82,22 @@ function getNextInstance(string, startIndex, chars) {
 //   return { hash, params };
 // }
 //
-// function extractHash(params) {
-//   const indexes = params.reduce((indexes, param, index) => {
-//     if (param === '=') {
-//       indexes.push(index);
-//     }
-//     return indexes;
-//   }, []).reverse();
-//
-//   return indexes.reduce((hash, index) => {
-//     const [key, , value] = params.splice(index - 1, 3);
-//
-//     hash[key] = value;
-//
-//     return hash;
-//   }, {});
-// }
+function extractHash(params) {
+  const indexes = params.reduce((indexes, param, index) => {
+    if (param === '=') {
+      indexes.push(index);
+    }
+    return indexes;
+  }, []).reverse();
+
+  return indexes.reduce((hash, index) => {
+    const [key, , value] = params.splice(index - 1, 3);
+
+    hash[key] = value;
+
+    return hash;
+  }, {});
+}
 
 function determineMethod(tagType) {
   switch (tagType) {
