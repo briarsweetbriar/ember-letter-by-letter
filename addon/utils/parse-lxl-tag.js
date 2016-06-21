@@ -12,16 +12,19 @@ function parseString(string, index = 0, parentArrayAccumulator = [], arrayAccumu
 
       var substring;
 
-      if (string.charAt(index) === '"') {
+      if (char === '"') {
         [substring, index] = getNextInstance(string, index + 1, ['"']);
-      } else if (string.charAt(index) === "'") {
+        index++;
+      } else if (char === "'") {
         [substring, index] = getNextInstance(string, index + 1, ["'"]);
+        index++;
       } else {
         [substring, index] = getNextInstance(string, index, [' ', ')']);
+        if (string.charAt(index) === ' ') { index++; }
       }
 
       if (substring) {
-        arrayAccumulator.push(substring);  
+        arrayAccumulator.push(substring);
       }
     }
   }
@@ -33,7 +36,7 @@ function getNextInstance(string, startIndex, chars) {
   var index = startIndex;
   while (index < string.length) {
     if (chars.indexOf(string.charAt(index)) > -1) {
-      return [string.substring(startIndex, index), index + 1];
+      return [string.substring(startIndex, index), index];
     }
 
     index += 1;

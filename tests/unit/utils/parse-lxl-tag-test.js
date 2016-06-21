@@ -65,7 +65,7 @@ test('`params` are split by spaces, unless in quotes', function(assert) {
 test('`params` can contain inner arrays', function(assert) {
   assert.expect(1);
 
-  const result = parseLxlTag('[[/foo bar (array inner "and string" (array deep ) last ) baz]]');
+  const result = parseLxlTag('[[/foo bar (array inner "and string" (array deep) last) baz]]');
 
   assert.deepEqual(result.params, [
     'bar',
