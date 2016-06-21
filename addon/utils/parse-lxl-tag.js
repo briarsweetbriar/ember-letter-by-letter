@@ -1,17 +1,18 @@
 function parseString(string, index = 0, parentAccumulator = [], isHash = false) {
   let arrayAccumulator = [];
+
   while (index < string.length) {
-    var char = string.charAt(index);
+    let char = string.charAt(index);
 
     if (char === '(') {
       [arrayAccumulator, index] = handleOpenParenthesis(string, index, arrayAccumulator);
     } else if (char === ')') {
-      pushToParent(parentAccumulator, arrayAccumulator, isHash);
+      index++;
 
-      return [parentAccumulator, index + 1];
+      break;
     } else {
 
-      var substring;
+      let substring;
 
       if (char === '"') {
         [substring, index] = getNextInstance(string, index + 1, ['"']);
