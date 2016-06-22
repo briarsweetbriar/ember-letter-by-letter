@@ -12,7 +12,7 @@ module('Unit | LXLTag | cps');
 
     const cps = CPS.create();
     const lxlContainer = { cps: '20' };
-    const promise = cps[methodName](lxlContainer, ['12.5']);
+    const promise = cps[methodName](lxlContainer, [12.5]);
 
     assert.equal(get(lxlContainer, 'cps'), 12.5, 'cps was updated');
     assert.equal(get(cps, 'initialCps'), 20, 'initialCps was set');

@@ -82,7 +82,7 @@ test('`params` can contain inner arrays', function(assert) {
 test('`params` can contain inner hashes', function(assert) {
   assert.expect(1);
 
-  const result = parseLxlTag('[[/foo bar (hash foo=bar "key string"="value string" myHash=(hash baz=burger myArray=(array 1 2 3) another=value)) baz]]');
+  const result = parseLxlTag('[[/foo bar (hash foo=bar "key string"="value string" myHash=(hash baz=burger myArray=(array 1 2 3 true false) another=value)) baz]]');
 
   assert.deepEqual(result.params, [
     'bar',
@@ -91,7 +91,7 @@ test('`params` can contain inner hashes', function(assert) {
       'key string': 'value string',
       myHash: {
         baz: 'burger',
-        myArray: ['1', '2', '3'],
+        myArray: [1, 2, 3, true, false],
         another: 'value'
       }
     },

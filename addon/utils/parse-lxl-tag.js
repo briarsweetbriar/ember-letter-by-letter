@@ -56,7 +56,7 @@ function appendNextSubstring(string, char, startIndex, accumulator) {
 
   while (string.charAt(index) === char) { index++; }
 
-  if (substring) {
+  if (substring === substring) {
     accumulator.push(substring);
   }
 
@@ -76,16 +76,30 @@ function extractSubstring(string, startIndex, chars) {
   let index = startIndex;
   while (index < string.length) {
     if (chars.indexOf(string.charAt(index)) > -1) {
-      return { substring: string.substring(startIndex, index), index };
+      break;
     }
 
     index++;
   }
 
+  const substring = parseSubstring(string.substring(startIndex, index));
+
   return {
-    substring: string.substring(startIndex, index),
+    substring,
     index
   };
+}
+
+function parseSubstring(substring) {
+  if (!isNaN(substring)) {
+    return parseFloat(substring);
+  } else if (substring === 'true') {
+    return true;
+  } else if (substring === 'false') {
+    return false;
+  } else {
+    return substring;
+  }
 }
 
 function determineMethod(tagType) {
