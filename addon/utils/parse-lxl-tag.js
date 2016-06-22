@@ -1,74 +1,40 @@
 function parseString(string, index = 0, parentAccumulator = [], isHash = false) {
-  let arrayAccumulator = [];
+  let accumulator = [];
 
   while (index < string.length) {
     const char = string.charAt(index);
 
     if (char === '(') {
-      [arrayAccumulator, index] = handleOpenParenthesis(string, index, arrayAccumulator);
+      index = handleOpenParenthesis(string, index + 1, accumulator);
     } else if (char === ')') {
-      index++;
-
-      break;
+      index++; break;
     } else {
-      index = extractSubstring(string, char, index, arrayAccumulator);
+      index = appendNextSubstring(string, char, index, accumulator);
     }
   }
 
-  pushToParent(parentAccumulator, arrayAccumulator, isHash);
+  appendToParent(parentAccumulator, accumulator, isHash);
 
-  return [parentAccumulator, index];
+  return { accumulator: parentAccumulator, index };
 }
 
-function handleOpenParenthesis(string, index, arrayAccumulator) {
-  const method = string.substring(index + 1, string.indexOf(' ', index));
+function appendToParent(parentAccumulator, accumulator, isHash) {
+  const child = isHash ? toHash(accumulator) : accumulator;
+
+  parentAccumulator.push(child);
+}
+
+function handleOpenParenthesis(string, index, accumulator) {
+  const method = string.substring(index, string.indexOf(' ', index));
 
   switch (method) {
-    case 'array': return parseString(string, index + 6, arrayAccumulator);
-    case 'hash': return parseString(string, index + 5, arrayAccumulator, true);
-    default: return [arrayAccumulator, index++];
+    case 'array': return parseString(string, index + method.length, accumulator).index;
+    case 'hash': return parseString(string, index + method.length, accumulator, true).index;
+    default: return index;
   }
 }
 
-function extractSubstring(string, char, index, arrayAccumulator) {
-  let substring;
-
-  switch (char) {
-    case '"': [substring, index] = getNextInstance(string, index + 1, ['"']); index++; break;
-    case "'": [substring, index] = getNextInstance(string, index + 1, ["'"]); index++; break;
-    case '=': substring = '='; index++; break;
-    default: [substring, index] = getNextInstance(string, index, [' ', ')', '=']); if (string.charAt(index) === ' ') { index++; } break;
-  }
-
-  if (substring) {
-    arrayAccumulator.push(substring);
-  }
-
-  return index;
-}
-
-function pushToParent(parentAccumulator, arrayAccumulator, isHash) {
-  if (isHash) {
-    parentAccumulator.push(extractHash(arrayAccumulator));
-  } else {
-    parentAccumulator.push(arrayAccumulator);
-  }
-}
-
-function getNextInstance(string, startIndex, chars) {
-  var index = startIndex;
-  while (index < string.length) {
-    if (chars.indexOf(string.charAt(index)) > -1) {
-      return [string.substring(startIndex, index), index];
-    }
-
-    index += 1;
-  }
-
-  return [string.substring(startIndex, index), index];
-}
-
-function extractHash(params) {
+function toHash(params) {
   const indexes = params.reduce((indexes, param, index) => {
     if (param === '=') {
       indexes.push(index);
@@ -85,6 +51,43 @@ function extractHash(params) {
   }, {});
 }
 
+function appendNextSubstring(string, char, startIndex, accumulator) {
+  let { index, substring } = matchSubstring(string, char, startIndex);
+
+  while (string.charAt(index) === char) { index++; }
+
+  if (substring) {
+    accumulator.push(substring);
+  }
+
+  return index;
+}
+
+function matchSubstring(string, char, index) {
+  switch (char) {
+    case '"': return extractSubstring(string, index + 1, [char]);
+    case "'": return extractSubstring(string, index + 1, [char]);
+    case '=': return { substring: char, index: index + 1 };
+    default: return extractSubstring(string, index, [' ', ')', '=']);
+  }
+}
+
+function extractSubstring(string, startIndex, chars) {
+  let index = startIndex;
+  while (index < string.length) {
+    if (chars.indexOf(string.charAt(index)) > -1) {
+      return { substring: string.substring(startIndex, index), index };
+    }
+
+    index++;
+  }
+
+  return {
+    substring: string.substring(startIndex, index),
+    index
+  };
+}
+
 function determineMethod(tagType) {
   switch (tagType) {
     case '#': return { isOpening: true, method: 'open' };
@@ -96,7 +99,7 @@ function determineMethod(tagType) {
 export default function parseLxlTag(text) {
   const [, tagType, content] = text.match(/\[\[(#|\/)?(.*?)\]\]/);
   const { isClosing, isOpening, method } = determineMethod(tagType);
-  const [[params]] = parseString(content);
+  const { accumulator: [params] } = parseString(content);
   const tagName = params.shift();
 
   return {
