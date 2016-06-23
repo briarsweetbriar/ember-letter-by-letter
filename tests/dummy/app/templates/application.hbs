@@ -1,3 +1,10 @@
-{{ember-expanding-sidebar sections=sections}}
+<div class="row">
+  <div class="columns small-3">
+    {{ember-expanding-sidebar sections=sections}}
+  </div>
 
-{{outlet}}
+  <div class="columns small-9">
+    <h1><code>ember-letter-by-letter</code></h1>
+    {{outlet}}
+  </div>
+</div>

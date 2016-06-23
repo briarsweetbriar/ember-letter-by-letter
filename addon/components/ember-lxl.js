@@ -14,7 +14,7 @@ const wordClass = 'lxl-word';
 const letterClass = 'lxl-letter';
 
 const htmlTagRegex = '<.*?>';
-const lxlTagRegex = '\\[\\[[#\\/].*?\\]\\]';
+const lxlTagRegex = '\\[\\[.*?\\]\\]';
 
 const {
   Component,
@@ -198,7 +198,7 @@ export default Component.extend(EKMixin, {
     get() {
       // the first part of the regex matches html tags (eg, `<strong>`), the second part lxl-text-tags,
       // and the last part matches and removes spaces, as we break on spaces to capture words.
-      const regex = new RegExp(`${htmlTagRegex}|${lxlTagRegex}|[^<\\s]+`, 'g');
+      const regex = new RegExp(`${htmlTagRegex}|${lxlTagRegex}|[^<>\\[\\]\\s]+`, 'g');
 
       return Ember.A(get(this, 'text').match(regex));
     }

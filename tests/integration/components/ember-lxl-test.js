@@ -28,7 +28,7 @@ test('it parses words into word and letter spans', function(assert) {
 });
 
 test('tags are respected', function(assert) {
-  assert.expect(7);
+  assert.expect(8);
 
   this.render(hbs`{{ember-lxl text="Outside <span id='span'>inside <strong id='strong'>bold</strong></span>"}}`);
 
@@ -43,10 +43,12 @@ test('tags are respected', function(assert) {
   assert.equal($strong.length, 1, 'strong is present');
   assert.equal($strong.text().trim(), 'bold', 'strong contains the right text');
   assert.ok($strong.is('strong'), 'strong is correct element');
+
+  assert.equal(this.$('.lxl-word').length - this.$('.lxl-dom-element').length, 3, 'correct number of lxl-words');
 });
 
 test('it executes lxl-tags', function(assert) {
-  assert.expect(5);
+  assert.expect(6);
 
   const done = assert.async();
 
@@ -54,6 +56,7 @@ test('it executes lxl-tags', function(assert) {
 
   assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first starts out 0');
   assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');
+  assert.equal(this.$('.lxl-word').length - this.$('.lxl-tag').length, 12, 'correct number of lxl-words');
 
   later(() => {
     assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 1, 'second word faded in');

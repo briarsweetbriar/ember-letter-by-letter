@@ -75,9 +75,7 @@ function matchSubstring(string, char, index) {
 function extractSubstring(string, startIndex, chars) {
   let index = startIndex;
   while (index < string.length) {
-    if (chars.indexOf(string.charAt(index)) > -1) {
-      break;
-    }
+    if (chars.indexOf(string.charAt(index)) > -1) { break; }
 
     index++;
   }
