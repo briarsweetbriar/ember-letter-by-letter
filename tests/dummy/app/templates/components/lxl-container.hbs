@@ -1,0 +1,7 @@
+<div class="lxl-outer-container">
+  {{#if open}}
+    {{yield}}
+  {{/if}}
+</div>
+
+<button {{action "restart"}} class="button pull-right">Restart</button>

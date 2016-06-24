@@ -5,8 +5,9 @@
 @import "ember-lxl/ember-lxl";
 
 .lxl-outer-container {
-  width: 600px;
+  border: thin dashed black;
   height: 100px;
+  width: 600px;
   overflow: hidden;
 }
 

@@ -1,5 +1,43 @@
-<div class="lxl-outer-container">
+<h3><code>cps</code></h3>
+
+<p><code>cps</code> changes the characters-per-second written by <code>ember-lxl</code>:</p>
+
+{{#lxl-container}}
   {{ember-lxl
-    text="Here we are, moving at a normal cps. [[#cps 100]]But, whoa! What is this?! Now the speed has changed! [[#cps 5]] And now it's really slow.[[/cps]] And back to fast again? [[/cps]] And now it returns to normal."
+    text="Default speed. [[cps 150]]And now sonic speed!!!!"
   }}
-</div>
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default speed. [[cps 150]]And now sonic speed!!!!"
+}}
+```'}}
+
+<p>If you use an opening tag, then you can return the cps to it previous value with a closing tag:</p>
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default speed. [[#cps 150]]Super fast!!! [[#cps 5]]Super slow...[[/cps]] Return to fast!!![[/cps]] Return to initial speed."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default speed. [[#cps 150]]Super fast!!! [[#cps 5]]Super slow...[[/cps]] Return to fast!!![[/cps]] Return to initial speed."
+}}
+```'}}
+
+<p>You can also change the cps relative to the current cps by using mathmatical operators, including <code>*</code>, <code>/</code>, <code>+</code>, <code>-</code>, <code>%</code>:</p>
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default speed. [[cps *15]]Times 15!!! [[cps +50]]Plus another 50!!!! [[cps -25]]Minus 25!!!? [[cps /5]]Divided by 5..."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default speed. [[cps *15]]Times 15!!! [[cps +50]]Plus another 50!!!! [[cps -25]]Minus 25!!!? [[cps /5]]Divided by 5..."
+}}
+```'}}

@@ -3,14 +3,13 @@ import { LXLTag } from 'ember-letter-by-letter';
 
 const {
   get,
-  set,
-  typeOf
+  set
 } = Ember;
 
 const { RSVP: { resolve } } = Ember;
 
 function calculateCPS(initialCps, modifier) {
-  if (typeOf(modifier) === 'number') { return parseFloat(modifier); }
+  modifier = modifier.toString();
 
   const operator = modifier.charAt(0);
   const modifierValue = parseFloat(modifier.substring(1));
