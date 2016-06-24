@@ -4,11 +4,19 @@
 
 @import "ember-lxl/ember-lxl";
 
+$rhythm: 15px;
+$horizontal-rhythm: $rhythm;
+$vertical-rhythm: $rhythm;
+
+body {
+  padding: $vertical-rhythm 0;
+}
+
 .lxl-outer-container {
   border: thin dashed black;
-  height: 100px;
-  width: 600px;
+  height: $vertical-rhythm * 10;
   overflow: hidden;
+  padding: $rhythm $rhythm * 2;
 }
 
 .ember-expanding-sidebar {
@@ -16,6 +24,22 @@
   @extend .vertical;
 
   .ember-expanding-sidebar {
-    margin-left: 10px;
+    margin-left: $horizontal-rhythm;
   }
+}
+
+.margin-bottom {
+  margin-bottom: $vertical-rhythm;
+}
+
+.margin-bottom-2 {
+  margin-bottom: $vertical-rhythm * 2;
+}
+
+.margin-top {
+  margin-top: $vertical-rhythm;
+}
+
+.margin-top-2 {
+  margin-top: $vertical-rhythm * 2;
 }
