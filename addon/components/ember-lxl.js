@@ -24,7 +24,6 @@ const {
   getProperties,
   isBlank,
   isPresent,
-  on,
   set,
   setProperties
 } = Ember;
@@ -73,9 +72,16 @@ export default Component.extend(EKMixin, {
   didInsertElement(...args) {
     this._super(...args);
 
+    this._bindPressEvents();
     this._bindKeys();
     this._bindResize();
     this._scrollToFirstWord();
+  },
+
+  _bindPressEvents() {
+    ['mouseUp', 'touchEnd'].forEach((eventName) => {
+      this.on(eventName, this._pressEvent);
+    });
   },
 
   _bindKeys() {
@@ -107,7 +113,7 @@ export default Component.extend(EKMixin, {
     set(this, 'currentPageFirstWord', firstWord);
   },
 
-  _pressEvent: on('mouseUp', 'touchEnd', function(event) {
+  _pressEvent(event) {
     // do nothing on right-click or mouse wheel or combo
     if (event.buttons > 1) { return; }
 
@@ -115,7 +121,7 @@ export default Component.extend(EKMixin, {
     if (!window.getSelection().isCollapsed) { return; }
 
     this._advanceText(event);
-  }),
+  },
 
   _advanceText(event) {
     if (event) {

@@ -15,6 +15,28 @@ const LxlContainer = Ember.Object.extend(Evented, { keys: [] });
 module('Unit | LXLTag | pause');
 
 ['open', 'execute'].forEach((methodName) => {
+  test(`${methodName} resolves immediately if lxlContainer isInstant`, function(assert) {
+    const done = assert.async();
+
+    assert.expect(1);
+
+    let resolved = false;
+
+    const pause = Pause.create();
+    const lxlContainer = LxlContainer.create({ isInstant: true });
+    const promise = pause[methodName](lxlContainer);
+
+    promise.then(() => {
+      resolved = true;
+    });
+
+    later(() => {
+      assert.ok(resolved, 'promise resolves at the start of the next run loop');
+
+      done();
+    });
+  });
+
   test(`${methodName} resolves after the provided duration`, function(assert) {
     const done = assert.async();
 
@@ -50,8 +72,8 @@ module('Unit | LXLTag | pause');
     const lxlContainer = LxlContainer.create({
       keys: ['Enter', 'ArrowRight'],
 
-      advanceText: on(keyDown('Enter'), keyDown('ArrowRight'), function() {
-        assert.ok(resolved, 'advanceText ran');
+      _advanceText: on(keyDown('Enter'), keyDown('ArrowRight'), function() {
+        assert.ok(resolved, '_advanceText ran');
       })
     });
 
@@ -67,6 +89,39 @@ module('Unit | LXLTag | pause');
       lxlContainer.trigger(keyDown('ArrowRight'));
 
       done();
+    });
+  });
+
+  ['mouseUp', 'touchEnd'].forEach((eventName) => {
+    test(`${methodName} resolves after ${eventName}`, function(assert) {
+      const done = assert.async();
+
+      assert.expect(1);
+
+      let resolved = false;
+
+      const pause = Pause.create();
+      const lxlContainer = LxlContainer.create({
+        keys: ['Enter', 'ArrowRight'],
+
+        _pressEvent: on(eventName, function() {
+          assert.ok(resolved, '_pressEvent ran');
+        })
+      });
+
+      const promise = pause[methodName](lxlContainer, []);
+
+      promise.then(() => {
+        resolved = true;
+      });
+
+      lxlContainer.trigger(eventName);
+
+      later(() => {
+        lxlContainer.trigger(eventName);
+
+        done();
+      });
     });
   });
 });

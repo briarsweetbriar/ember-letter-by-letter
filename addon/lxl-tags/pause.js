@@ -39,18 +39,20 @@ export default LXLTag.extend({
 
   execute(lxlContainer, params) {
     return new Promise((resolve) => {
+      if (get(lxlContainer, 'isInstant')) { resolve(); }
+
       setProperties(this, {
         lxlContainer,
         resolve
       });
 
       get(lxlContainer, 'keys').forEach((key) => {
-        lxlContainer.off(keyDown(key), lxlContainer.advanceText);
+        lxlContainer.off(keyDown(key), lxlContainer._advanceText);
         lxlContainer.on(keyDown(key), this, this._resolve);
       });
 
       ['mouseUp', 'touchEnd'].forEach((eventName) => {
-        lxlContainer.off(eventName, lxlContainer.advanceText);
+        lxlContainer.off(eventName, lxlContainer._pressEvent);
         lxlContainer.on(eventName, this, this._resolve);
       });
 
@@ -74,12 +76,12 @@ export default LXLTag.extend({
     later(() => {
       get(lxlContainer, 'keys').forEach((key) => {
         lxlContainer.off(keyDown(key), this, this._resolve);
-        lxlContainer.on(keyDown(key), lxlContainer.advanceText);
+        lxlContainer.on(keyDown(key), lxlContainer._advanceText);
       });
 
       ['mouseUp', 'touchEnd'].forEach((eventName) => {
         lxlContainer.off(eventName, this, this._resolve);
-        lxlContainer.on(eventName, lxlContainer.advanceText);
+        lxlContainer.on(eventName, lxlContainer._pressEvent);
       });
 
       this.destroy();
