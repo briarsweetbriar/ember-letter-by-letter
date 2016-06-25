@@ -24,6 +24,7 @@ const {
   getProperties,
   isBlank,
   isPresent,
+  on,
   set,
   setProperties
 } = Ember;
@@ -106,19 +107,7 @@ export default Component.extend(EKMixin, {
     set(this, 'currentPageFirstWord', firstWord);
   },
 
-  mouseUp(...args) {
-    this._super(...args);
-
-    this._pressEvent(...args);
-  },
-
-  touchEnd(...args) {
-    this._super(...args);
-
-    this._pressEvent(...args);
-  },
-
-  _pressEvent(event) {
+  _pressEvent: on('mouseUp', 'touchEnd', function(event) {
     // do nothing on right-click or mouse wheel or combo
     if (event.buttons > 1) { return; }
 
@@ -126,7 +115,7 @@ export default Component.extend(EKMixin, {
     if (!window.getSelection().isCollapsed) { return; }
 
     this._advanceText(event);
-  },
+  }),
 
   _advanceText(event) {
     if (event) {

@@ -19,9 +19,8 @@ Router.map(function() {
     this.route('instant');
     this.route('tween-rate');
     this.route('tween-effect');
+    this.route('pause');
   });
-
-  this.route('lxl-tag', function() {});
 });
 
 export default Router;

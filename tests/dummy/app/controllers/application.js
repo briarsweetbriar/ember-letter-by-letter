@@ -28,6 +28,8 @@ export default Controller.extend({
     }, {
       route: 'instant'
     }, {
+      route: 'pause'
+    }, {
       route: 'stagger'
     }, {
       route: 'tween-rate',

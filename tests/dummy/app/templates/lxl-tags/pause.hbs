@@ -1,0 +1,32 @@
+<h3><code>pause</code></h3>
+
+<p class="margin-top"><code>pause</code> will pause the text for the provided duration:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I am written. [[pause 1000]]I continue writing!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I am written. [[pause 1000]]I continue writing!"
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">It will also respond to keyDown events (in this case, ['Enter', 'ArrowRight']), or to 'mouseUp' and 'touchEnd':</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  keys=keys
+  text="I am written. [[pause]]I continue writing!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    keys=keys
+    keyboardActivated=true
+    text="I am written. [[pause]]I continue writing!"
+  }}
+{{/lxl-container}}

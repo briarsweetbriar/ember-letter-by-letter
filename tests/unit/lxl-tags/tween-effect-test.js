@@ -14,8 +14,8 @@ module('Unit | LXLTag | tween effect');
     const lxlContainer = { tweenEffect: { foo: 'bar' } };
     const promise = tweenEffect[methodName](lxlContainer, [{ baz: 'boom' }]);
 
-    assert.equal(get(lxlContainer, 'tweenEffect'), { baz: 'boom' }, 'tweenEffect was updated');
-    assert.equal(get(tweenEffect, 'initialTweenEffect'), { foo: 'bar' }, 'initialTweenEffect was set');
+    assert.deepEqual(get(lxlContainer, 'tweenEffect'), { baz: 'boom' }, 'tweenEffect was updated');
+    assert.deepEqual(get(tweenEffect, 'initialTweenEffect'), { foo: 'bar' }, 'initialTweenEffect was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 });
@@ -27,6 +27,6 @@ test('close returns the lxlContainer tweenEffect to its initial value', function
   const lxlContainer = { tweenEffect: { baz: 'boom' } };
   const promise = tweenEffect.close(lxlContainer);
 
-  assert.equal(get(lxlContainer, 'tweenEffect'), { foo: 'bar' }, 'tweenEffect was returned to initialTweenEffect');
+  assert.deepEqual(get(lxlContainer, 'tweenEffect'), { foo: 'bar' }, 'tweenEffect was returned to initialTweenEffect');
   assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
 });
