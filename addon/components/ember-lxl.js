@@ -309,7 +309,7 @@ export default Component.extend(EKMixin, {
 
   _executeCustomTag(text, index) {
     const container = getOwner(this);
-    const { hash, isClosing, isOpening, method, params, tagName } = parseLxlTag(text);
+    const { isClosing, isOpening, method, params, tagName } = parseLxlTag(text);
     const activeTags = get(this, `activeTags.${tagName}`) || set(this, `activeTags.${tagName}`, Ember.A());
     const tag = isClosing ? activeTags.popObject() : container.lookup(`lxl-tag:${tagName}`).create();
 
@@ -317,7 +317,7 @@ export default Component.extend(EKMixin, {
       activeTags.pushObject(tag);
     }
 
-    tag[method](this, params, hash).then(() => {
+    tag[method](this, params).then(() => {
       this._processWord(index + 1);
     });
   },

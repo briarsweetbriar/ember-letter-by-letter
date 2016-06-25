@@ -11,8 +11,6 @@ export default LXLTag.extend({
     @method open
     @param {Object} lxlContainer
     @param {Array} params
-    @param {Object} hash
-    @param {Number} index
     @return {Promise}
   */
 
@@ -26,8 +24,6 @@ export default LXLTag.extend({
     @method execute
     @param {Object} lxlContainer
     @param {Array} params
-    @param {Object} hash
-    @param {Number} index
     @return {Promise}
   */
 
@@ -43,8 +39,6 @@ export default LXLTag.extend({
     @method close
     @param {Object} lxlContainer
     @param {Array} params
-    @param {Object} hash
-    @param {Number} index
     @return {Promise}
   */
 

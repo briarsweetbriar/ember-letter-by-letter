@@ -7,12 +7,11 @@ export default LXLTag.extend({
     @method open
     @param {Object} lxlContainer
     @param {Array} params
-    @param {Object} hash
-    @param {Number} index
+
     @return {Promise}
   */
 
-  open(lxlContainer, params, hash, index) {
+  open(lxlContainer, params) {
 
   },
 
@@ -22,12 +21,11 @@ export default LXLTag.extend({
     @method execute
     @param {Object} lxlContainer
     @param {Array} params
-    @param {Object} hash
-    @param {Number} index
+
     @return {Promise}
   */
 
-  execute(lxlContainer, params, hash, index) {
+  execute(lxlContainer, params) {
 
   },
 
@@ -37,12 +35,11 @@ export default LXLTag.extend({
     @method close
     @param {Object} lxlContainer
     @param {Array} params
-    @param {Object} hash
-    @param {Number} index
+
     @return {Promise}
   */
 
-  close(lxlContainer, params, hash, index) {
+  close(lxlContainer, params) {
 
   }
 });
