@@ -89,7 +89,7 @@ function extractSubstring(string, startIndex, chars) {
 }
 
 function parseSubstring(substring) {
-  if (!isNaN(substring)) {
+  if (!isNaN(substring) && substring.charAt(0) !== '+') {
     return parseFloat(substring);
   } else if (substring === 'true') {
     return true;

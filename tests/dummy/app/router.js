@@ -17,6 +17,7 @@ Router.map(function() {
     this.route('custom');
     this.route('stagger');
     this.route('instant');
+    this.route('tween-rate');
   });
 });
 

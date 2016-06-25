@@ -11,11 +11,12 @@ const { RSVP: { resolve } } = Ember;
 
 export default LXLTag.extend({
   /**
-    Called when a tag is opening, such as ((#stagger))
+    Called when a tag is opening, such as ((#tween-rate))
 
     @method open
     @param {Object} lxlContainer
     @param {Array} params
+
     @return {Promise}
   */
 
@@ -24,35 +25,37 @@ export default LXLTag.extend({
   },
 
   /**
-    Called when a tag is neither opening nor closing, such as ((stagger))
+    Called when a tag is neither opening nor closing, such as ((tween-rate))
 
     @method execute
     @param {Object} lxlContainer
     @param {Array} params
+
     @return {Promise}
   */
 
   execute(lxlContainer, params) {
-    const initialStagger = parseFloat(get(lxlContainer, 'stagger'));
-    const newStagger = calculateWithModifier(initialStagger, params[0]);
+    const initialTweenRate = parseFloat(get(lxlContainer, 'tweenRate'));
+    const newRate = calculateWithModifier(initialTweenRate, params[0]);
 
-    set(lxlContainer, 'stagger', newStagger);
-    set(this, 'initialStagger', initialStagger);
+    set(lxlContainer, 'tweenRate', newRate);
+    set(this, 'initialTweenRate', initialTweenRate);
 
     return resolve();
   },
 
   /**
-    Called when a tag is closing, such as ((/stagger))
+    Called when a tag is closing, such as ((/tween-rate))
 
     @method close
     @param {Object} lxlContainer
     @param {Array} params
+
     @return {Promise}
   */
 
   close(lxlContainer) {
-    set(lxlContainer, 'stagger', get(this, 'initialStagger'));
+    set(lxlContainer, 'tweenRate', get(this, 'initialTweenRate'));
 
     return resolve();
   }

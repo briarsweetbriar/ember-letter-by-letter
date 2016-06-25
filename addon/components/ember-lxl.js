@@ -41,8 +41,8 @@ export default Component.extend(EKMixin, {
   layout,
 
   keys: [],
-  tweenEffect: {},
   stagger: 25,
+  tweenEffect: {},
   tweenRate: 25,
 
   activeWordIndex: 0,
