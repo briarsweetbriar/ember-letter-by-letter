@@ -23,6 +23,10 @@ body {
   @extend .menu;
   @extend .vertical;
 
+  a {
+    display: inline-block !important;
+  }
+
   .ember-expanding-sidebar {
     margin-left: $horizontal-rhythm;
   }

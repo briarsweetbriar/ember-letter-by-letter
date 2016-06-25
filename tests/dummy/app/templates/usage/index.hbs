@@ -1,0 +1,15 @@
+<p>To use <code>ember-letter-by-letter</code>, insert its component and provide some text:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I will be written letter by letter!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I will be written letter by letter!"
+  }}
+{{/lxl-container}}
+
+<p>In addition, there are several arguments that you can pass in to change the way the component works, including <code>cps</code>, <code>tweenEffect</code>, <code>tweenRate</code>, and <code>keys</code>.</p>

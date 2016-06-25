@@ -7,7 +7,7 @@ const { get } = Ember;
 module('Unit | LXLTag | instant');
 
 ['open', 'execute'].forEach((methodName) => {
-  test(`${methodName} sets a new stagger on the lxlContainer`, function(assert) {
+  test(`${methodName} sets a new cps on the lxlContainer`, function(assert) {
     assert.expect(2);
 
     const instant = Instant.create();
@@ -19,7 +19,7 @@ module('Unit | LXLTag | instant');
   });
 });
 
-test('close sets a new stagger on the lxlContainer', function(assert) {
+test('close sets a new cps on the lxlContainer', function(assert) {
   assert.expect(2);
 
   const instant = Instant.create();

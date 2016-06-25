@@ -1,92 +1,92 @@
 import Ember from 'ember';
-import Stagger from 'ember-letter-by-letter/lxl-tags/stagger';
+import Cps from 'ember-letter-by-letter/lxl-tags/cps';
 import { module, test } from 'qunit';
 
 const { get } = Ember;
 
-module('Unit | LXLTag | stagger');
+module('Unit | LXLTag | cps');
 
 ['open', 'execute'].forEach((methodName) => {
-  test(`${methodName} sets a new stagger on the lxlContainer`, function(assert) {
+  test(`${methodName} sets a new cps on the lxlContainer`, function(assert) {
     assert.expect(3);
 
-    const stagger = Stagger.create();
-    const lxlContainer = { stagger: '20' };
-    const promise = stagger[methodName](lxlContainer, [12.5]);
+    const cps = Cps.create();
+    const lxlContainer = { cps: '20' };
+    const promise = cps[methodName](lxlContainer, [12.5]);
 
-    assert.equal(get(lxlContainer, 'stagger'), 12.5, 'stagger was updated');
-    assert.equal(get(stagger, 'initialStagger'), 20, 'initialStagger was set');
+    assert.equal(get(lxlContainer, 'cps'), 12.5, 'cps was updated');
+    assert.equal(get(cps, 'initialCps'), 20, 'initialCps was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 
-  test(`${methodName} multiplies the initial stagger if starting with a *`, function(assert) {
+  test(`${methodName} multiplies the initial cps if starting with a *`, function(assert) {
     assert.expect(3);
 
-    const stagger = Stagger.create();
-    const lxlContainer = { stagger: '20' };
-    const promise = stagger[methodName](lxlContainer, ['*2.5']);
+    const cps = Cps.create();
+    const lxlContainer = { cps: '20' };
+    const promise = cps[methodName](lxlContainer, ['*2.5']);
 
-    assert.equal(get(lxlContainer, 'stagger'), 50, 'stagger was updated');
-    assert.equal(get(stagger, 'initialStagger'), 20, 'initialStagger was set');
+    assert.equal(get(lxlContainer, 'cps'), 50, 'cps was updated');
+    assert.equal(get(cps, 'initialCps'), 20, 'initialCps was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 
-  test(`${methodName} adds the initial stagger if starting with a +`, function(assert) {
+  test(`${methodName} adds the initial cps if starting with a +`, function(assert) {
     assert.expect(3);
 
-    const stagger = Stagger.create();
-    const lxlContainer = { stagger: '20' };
-    const promise = stagger[methodName](lxlContainer, ['+2.5']);
+    const cps = Cps.create();
+    const lxlContainer = { cps: '20' };
+    const promise = cps[methodName](lxlContainer, ['+2.5']);
 
-    assert.equal(get(lxlContainer, 'stagger'), 22.5, 'stagger was updated');
-    assert.equal(get(stagger, 'initialStagger'), 20, 'initialStagger was set');
+    assert.equal(get(lxlContainer, 'cps'), 22.5, 'cps was updated');
+    assert.equal(get(cps, 'initialCps'), 20, 'initialCps was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 
-  test(`${methodName} divides the initial stagger if starting with a /`, function(assert) {
+  test(`${methodName} divides the initial cps if starting with a /`, function(assert) {
     assert.expect(3);
 
-    const stagger = Stagger.create();
-    const lxlContainer = { stagger: '20' };
-    const promise = stagger[methodName](lxlContainer, ['/2']);
+    const cps = Cps.create();
+    const lxlContainer = { cps: '20' };
+    const promise = cps[methodName](lxlContainer, ['/2']);
 
-    assert.equal(get(lxlContainer, 'stagger'), 10, 'stagger was updated');
-    assert.equal(get(stagger, 'initialStagger'), 20, 'initialStagger was set');
+    assert.equal(get(lxlContainer, 'cps'), 10, 'cps was updated');
+    assert.equal(get(cps, 'initialCps'), 20, 'initialCps was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 
-  test(`${methodName} subtracts the initial stagger if starting with a -`, function(assert) {
+  test(`${methodName} subtracts the initial cps if starting with a -`, function(assert) {
     assert.expect(3);
 
-    const stagger = Stagger.create();
-    const lxlContainer = { stagger: '20' };
-    const promise = stagger[methodName](lxlContainer, ['-2.5']);
+    const cps = Cps.create();
+    const lxlContainer = { cps: '20' };
+    const promise = cps[methodName](lxlContainer, ['-2.5']);
 
-    assert.equal(get(lxlContainer, 'stagger'), 17.5, 'stagger was updated');
-    assert.equal(get(stagger, 'initialStagger'), 20, 'initialStagger was set');
+    assert.equal(get(lxlContainer, 'cps'), 17.5, 'cps was updated');
+    assert.equal(get(cps, 'initialCps'), 20, 'initialCps was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 
-  test(`${methodName} gives the remainder of the initial stagger if starting with a %`, function(assert) {
+  test(`${methodName} gives the remainder of the initial cps if starting with a %`, function(assert) {
     assert.expect(3);
 
-    const stagger = Stagger.create();
-    const lxlContainer = { stagger: '22' };
-    const promise = stagger[methodName](lxlContainer, ['%2.5']);
+    const cps = Cps.create();
+    const lxlContainer = { cps: '22' };
+    const promise = cps[methodName](lxlContainer, ['%2.5']);
 
-    assert.equal(get(lxlContainer, 'stagger'), 2, 'stagger was updated');
-    assert.equal(get(stagger, 'initialStagger'), 22, 'initialStagger was set');
+    assert.equal(get(lxlContainer, 'cps'), 2, 'cps was updated');
+    assert.equal(get(cps, 'initialCps'), 22, 'initialCps was set');
     assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
   });
 });
 
-test('close returns the lxlContainer stagger to its initial value', function(assert) {
+test('close returns the lxlContainer cps to its initial value', function(assert) {
   assert.expect(2);
 
-  const stagger = Stagger.create({ initialStagger: 5 });
-  const lxlContainer = { stagger: '22' };
-  const promise = stagger.close(lxlContainer);
+  const cps = Cps.create({ initialCps: 5 });
+  const lxlContainer = { cps: '22' };
+  const promise = cps.close(lxlContainer);
 
-  assert.equal(get(lxlContainer, 'stagger'), 5, 'stagger was returned to initialStagger');
+  assert.equal(get(lxlContainer, 'cps'), 5, 'cps was returned to initialCps');
   assert.equal(promise.constructor.name, 'Promise', 'returns a promise');
 });

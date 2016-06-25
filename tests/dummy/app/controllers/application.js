@@ -13,24 +13,27 @@ export default Controller.extend({
     route: 'usage',
     name: 'Usage',
     sections: [{
-      route: 'stagger'
+      route: 'cps'
     }, {
-      route: 'tween-rate'
+      route: 'tween-rate',
+      name: 'tweenRate'
     }, {
-      route: 'tween-effect'
+      route: 'tween-effect',
+      name: 'tweenEffect'
     }, {
       route: 'keys'
     }]
   }, {
     route: 'lxl-tags',
     sections: [{
-      route: 'custom'
+      route: 'custom',
+      name: '*Custom'
     }, {
       route: 'instant'
     }, {
       route: 'pause'
     }, {
-      route: 'stagger'
+      route: 'cps'
     }, {
       route: 'tween-rate',
     }, {

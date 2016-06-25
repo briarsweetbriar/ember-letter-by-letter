@@ -11,7 +11,7 @@ const { RSVP: { resolve } } = Ember;
 
 export default LXLTag.extend({
   /**
-    Called when a tag is opening, such as ((#stagger))
+    Called when a tag is opening, such as ((#cps))
 
     @method open
     @param {Object} lxlContainer
@@ -24,7 +24,7 @@ export default LXLTag.extend({
   },
 
   /**
-    Called when a tag is neither opening nor closing, such as ((stagger))
+    Called when a tag is neither opening nor closing, such as ((cps))
 
     @method execute
     @param {Object} lxlContainer
@@ -33,17 +33,17 @@ export default LXLTag.extend({
   */
 
   execute(lxlContainer, params) {
-    const initialStagger = parseFloat(get(lxlContainer, 'stagger'));
-    const newStagger = calculateWithModifier(initialStagger, params[0]);
+    const initialCps = parseFloat(get(lxlContainer, 'cps'));
+    const newCps = calculateWithModifier(initialCps, params[0]);
 
-    set(lxlContainer, 'stagger', newStagger);
-    set(this, 'initialStagger', initialStagger);
+    set(lxlContainer, 'cps', newCps);
+    set(this, 'initialCps', initialCps);
 
     return resolve();
   },
 
   /**
-    Called when a tag is closing, such as ((/stagger))
+    Called when a tag is closing, such as ((/cps))
 
     @method close
     @param {Object} lxlContainer
@@ -52,7 +52,7 @@ export default LXLTag.extend({
   */
 
   close(lxlContainer) {
-    set(lxlContainer, 'stagger', get(this, 'initialStagger'));
+    set(lxlContainer, 'cps', get(this, 'initialCps'));
 
     return resolve();
   }

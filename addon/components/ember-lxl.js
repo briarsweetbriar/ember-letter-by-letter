@@ -41,7 +41,7 @@ export default Component.extend(EKMixin, {
   layout,
 
   keys: [],
-  stagger: 25,
+  cps: 25,
   tweenEffect: {},
   tweenRate: 25,
 
@@ -177,15 +177,15 @@ export default Component.extend(EKMixin, {
     });
   },
 
-  staggerRate: computed('stagger', {
+  cpsRate: computed('cps', {
     get() {
-      return second / get(this, 'stagger');
+      return second / get(this, 'cps');
     }
   }),
 
-  tweenDuration: computed('staggerRate', 'tweenRate', {
+  tweenDuration: computed('cpsRate', 'tweenRate', {
     get() {
-      return get(this, 'staggerRate') * get(this, 'tweenRate');
+      return get(this, 'cpsRate') * get(this, 'tweenRate');
     }
   }),
 
@@ -280,7 +280,7 @@ export default Component.extend(EKMixin, {
   _writeLetter($word, wordLength, characterIndex, wordIndex) {
     if (get(this, 'isInstant')) { return this._shortCircuitWord($word, wordIndex); }
 
-    const staggerRate = get(this, 'staggerRate');
+    const cpsRate = get(this, 'cpsRate');
     const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
 
     this._tween($letter);
@@ -291,7 +291,7 @@ export default Component.extend(EKMixin, {
       } else {
         this._processWord(wordIndex + 1);
       }
-    }, staggerRate);
+    }, cpsRate);
   },
 
   _shortCircuitWord($word, wordIndex) {
