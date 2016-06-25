@@ -43,7 +43,7 @@ export default Component.extend(EKMixin, {
   keys: [],
   effect: {},
   cps: 25,
-  tweenRate: 25,
+  stagger: 25,
 
   activeWordIndex: 0,
   activeTags: {},
@@ -188,9 +188,9 @@ export default Component.extend(EKMixin, {
     }
   }),
 
-  tweenDuration: computed('cpsRate', 'tweenRate', {
+  tweenDuration: computed('cpsRate', 'stagger', {
     get() {
-      return get(this, 'cpsRate') * get(this, 'tweenRate');
+      return get(this, 'cpsRate') * get(this, 'stagger');
     }
   }),
 
