@@ -1,1 +1,29 @@
-{{outlet}}
+<h3><code>instant</code></h3>
+
+<p class="margin-top"><code>instant</code> will cause all text after the tag to appear instantly:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I am written. [[instant]]I appear instantly!!!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I am written. [[instant]]I appear instantly!!!"
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">If you provide a closing tag, then it will return to letter-by-letter rendering:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I am written. [[#instant]]I appear instantly!!![[/instant]] I am also written."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I am written. [[#instant]]I appear instantly!!![[/instant]] I am also written."
+  }}
+{{/lxl-container}}
