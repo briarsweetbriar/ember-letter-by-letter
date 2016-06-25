@@ -25,7 +25,7 @@ function calculateCPS(initialCps, modifier) {
 
 export default LXLTag.extend({
   /**
-    Called when a tag is opening, such as ((#cps))
+    Called when a tag is opening, such as ((#stagger))
 
     @method open
     @param {Object} lxlContainer
@@ -38,7 +38,7 @@ export default LXLTag.extend({
   },
 
   /**
-    Called when a tag is neither opening nor closing, such as ((cps))
+    Called when a tag is neither opening nor closing, such as ((stagger))
 
     @method execute
     @param {Object} lxlContainer
@@ -47,17 +47,17 @@ export default LXLTag.extend({
   */
 
   execute(lxlContainer, params) {
-    const initialCps = parseFloat(get(lxlContainer, 'cps'));
+    const initialCps = parseFloat(get(lxlContainer, 'stagger'));
     const newCps = calculateCPS(initialCps, params[0]);
 
-    set(lxlContainer, 'cps', newCps);
+    set(lxlContainer, 'stagger', newCps);
     set(this, 'initialCps', initialCps);
 
     return resolve();
   },
 
   /**
-    Called when a tag is closing, such as ((/cps))
+    Called when a tag is closing, such as ((/stagger))
 
     @method close
     @param {Object} lxlContainer
@@ -66,7 +66,7 @@ export default LXLTag.extend({
   */
 
   close(lxlContainer) {
-    set(lxlContainer, 'cps', get(this, 'initialCps'));
+    set(lxlContainer, 'stagger', get(this, 'initialCps'));
 
     return resolve();
   }

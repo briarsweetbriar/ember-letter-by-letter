@@ -13,11 +13,11 @@ export default Controller.extend({
     route: 'usage',
     name: 'Usage',
     sections: [{
-      route: 'cps'
+      route: 'stagger'
     }, {
       route: 'tween-rate'
     }, {
-      route: 'effect'
+      route: 'tween-effect'
     }, {
       route: 'keys'
     }]
@@ -26,7 +26,7 @@ export default Controller.extend({
     sections: [{
       route: 'custom'
     }, {
-      route: 'cps'
+      route: 'stagger'
     }, {
       route: 'instant'
     }]

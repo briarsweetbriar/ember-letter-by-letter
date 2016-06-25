@@ -41,9 +41,9 @@ export default Component.extend(EKMixin, {
   layout,
 
   keys: [],
-  effect: {},
-  cps: 25,
+  tweenEffect: {},
   stagger: 25,
+  tweenRate: 25,
 
   activeWordIndex: 0,
   activeTags: {},
@@ -182,15 +182,15 @@ export default Component.extend(EKMixin, {
     });
   },
 
-  cpsRate: computed('cps', {
+  staggerRate: computed('stagger', {
     get() {
-      return second / get(this, 'cps');
+      return second / get(this, 'stagger');
     }
   }),
 
-  tweenDuration: computed('cpsRate', 'stagger', {
+  tweenDuration: computed('staggerRate', 'tweenRate', {
     get() {
-      return get(this, 'cpsRate') * get(this, 'stagger');
+      return get(this, 'staggerRate') * get(this, 'tweenRate');
     }
   }),
 
@@ -285,7 +285,7 @@ export default Component.extend(EKMixin, {
   _writeLetter($word, wordLength, characterIndex, wordIndex) {
     if (get(this, 'isInstant')) { return this._shortCircuitWord($word, wordIndex); }
 
-    const cpsRate = get(this, 'cpsRate');
+    const staggerRate = get(this, 'staggerRate');
     const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
 
     this._tween($letter);
@@ -296,7 +296,7 @@ export default Component.extend(EKMixin, {
       } else {
         this._processWord(wordIndex + 1);
       }
-    }, cpsRate);
+    }, staggerRate);
   },
 
   _shortCircuitWord($word, wordIndex) {
@@ -329,12 +329,12 @@ export default Component.extend(EKMixin, {
   },
 
   _tween($element) {
-    const { effect, tweenDuration } = getProperties(this, 'effect', 'tweenDuration');
+    const { tweenEffect, tweenDuration } = getProperties(this, 'tweenEffect', 'tweenDuration');
 
-    effect.opacity = effect.opacity ? effect.opacity : { to: 1, from: 0 };
+    tweenEffect.opacity = tweenEffect.opacity ? tweenEffect.opacity : { to: 1, from: 0 };
 
     motion.tween({
-      values: effect,
+      values: tweenEffect,
       duration: tweenDuration
     }).on($element[0]).start();
   }

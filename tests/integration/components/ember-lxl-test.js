@@ -52,7 +52,7 @@ test('it executes lxl-tags', function(assert) {
 
   const done = assert.async();
 
-  this.render(hbs`{{ember-lxl text="Slow [[#cps 1000000000]]very fast, and it's still fast and fast fast fast[[/cps]] slow." cps=10 stagger=5}}`);
+  this.render(hbs`{{ember-lxl text="Slow [[#stagger 1000000000]]very fast, and it's still fast and fast fast fast[[/stagger]] slow." stagger=10 tweenRate=5}}`);
 
   assert.equal(this.$('.lxl-word:first').css('opacity'), 1, 'first starts out 0');
   assert.equal(this.$('.lxl-word:last').css('opacity'), 0, 'last starts out 0');
@@ -72,7 +72,7 @@ test('it gradually fades the characters in', function(assert) {
 
   const done = assert.async();
 
-  this.render(hbs`{{ember-lxl text="Word." cps=100 stagger=5}}`);
+  this.render(hbs`{{ember-lxl text="Word." stagger=100 tweenRate=5}}`);
 
   assert.equal(this.$('.lxl-letter:first').css('opacity'), 0, 'first starts out 0');
   assert.equal(this.$('.lxl-letter:last').css('opacity'), 0, 'last starts out 0');
@@ -110,8 +110,8 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     <div style="width: 250px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
-        cps=10000000000
-        stagger=0
+        stagger=10000000000
+        tweenRate=0
         onComplete=(action completed)
         onPause=(action paused)
         onResume=(action resumed)
