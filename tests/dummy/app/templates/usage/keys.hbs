@@ -1,1 +1,38 @@
-{{outlet}}
+<h3><code>keys</code></h3>
+
+<p class="margin-top"><code>keys</code> allows you to bind keyDown events to the <code>ember-lxl</code> so that it can respond to them just like it responds to click and touch events. By default, it does not respond to keyDown events:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I do not respond to keyDown events! Click or tap me to see me autocomplete or advance to the next page!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I do not respond to keyDown events! Click or tap me to see me autocomplete or advance to the next page!"
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```js
+// controllers/usage/keys.js
+export default Ember.Controller.extend({
+  keys: ["Enter", "ArrowRight"]
+});
+```
+
+```hbs
+{{ember-lxl
+  keyboardActivated=true
+  keys=keys
+  text="I also respond to Enter and ArrowRight keyDown events! <code>keys</code> is an array set in my controller!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    keyboardActivated=true
+    keys=keys
+    text="I also respond to Enter and ArrowRight keyDown events! <code>keys</code> is an array set in my controller!"
+  }}
+{{/lxl-container}}

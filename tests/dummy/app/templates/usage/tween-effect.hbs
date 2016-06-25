@@ -1,1 +1,43 @@
-{{outlet}}
+<h3><code>tweenEffect</code></h3>
+
+<p class="margin-top"><code>tweenEffect</code> sets the effect used to animate each character in. Consult the <a href="https://popmotion.io/guides/basics/get-started/" target="_blank">popmotion</a> guides for more information about tweening!</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use the default tweenEffect, which simply changes opacity from 0 to 1."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use the default tweenEffect, which simply changes opacity from 0 to 1."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  tweenEffect=(hash x=(hash to=0 from=100))
+  text="I also change the x coordinate!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    tweenEffect=(hash x=(hash to=0 from=100))
+    text="I also change the x coordinate!"
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  tweenEffect=(hash opacity=(hash to=0.5 from=0))
+  text="I overwrite the default opacity change!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    tweenEffect=(hash opacity=(hash to=0.5 from=0))
+    text="I overwrite the default opacity change!"
+  }}
+{{/lxl-container}}

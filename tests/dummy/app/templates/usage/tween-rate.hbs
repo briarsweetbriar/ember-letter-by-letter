@@ -1,1 +1,43 @@
-{{outlet}}
+<h3><code>tweenRate</code></h3>
+
+<p class="margin-top"><code>tweenRate</code> determines how quickly each character is animated. Higher numbers are slower, as they represent more milliseconds:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use the default tweenRate of 25 milliseconds."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use the default tweenRate of 25 milliseconds."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  tweenRate=10
+  text="I use a fast tweenRate!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    tweenRate=10
+    text="I use a fast tweenRate!"
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  tweenRate=100
+  text="I use a slow tweenRate. . . ."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    tweenRate=100
+    text="I use a slow tweenRate. . . ."
+  }}
+{{/lxl-container}}
