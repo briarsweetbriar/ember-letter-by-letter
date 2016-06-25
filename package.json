@@ -54,6 +54,7 @@
     "ember-popmotion": "5.0.11"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "http://null-null-null.github.io/ember-letter-by-letter/"
   }
 }

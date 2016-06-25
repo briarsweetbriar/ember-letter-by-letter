@@ -34,7 +34,7 @@ module('Unit | LXLTag | pause');
       assert.ok(resolved, 'promise resolves at the start of the next run loop');
 
       done();
-    });
+    }, 10);
   });
 
   test(`${methodName} resolves after the provided duration`, function(assert) {
@@ -89,7 +89,7 @@ module('Unit | LXLTag | pause');
       lxlContainer.trigger(keyDown('ArrowRight'));
 
       done();
-    });
+    }, 10);
   });
 
   ['mouseUp', 'touchEnd'].forEach((eventName) => {
@@ -121,7 +121,7 @@ module('Unit | LXLTag | pause');
         lxlContainer.trigger(eventName);
 
         done();
-      });
+      }, 10);
     });
   });
 });
