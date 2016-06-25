@@ -18,7 +18,10 @@ Router.map(function() {
     this.route('stagger');
     this.route('instant');
     this.route('tween-rate');
+    this.route('tween-effect');
   });
+
+  this.route('lxl-tag', function() {});
 });
 
 export default Router;

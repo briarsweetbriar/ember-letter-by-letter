@@ -26,11 +26,13 @@ export default Controller.extend({
     sections: [{
       route: 'custom'
     }, {
+      route: 'instant'
+    }, {
       route: 'stagger'
     }, {
       route: 'tween-rate',
     }, {
-      route: 'instant'
+      route: 'tween-effect',
     }]
   }]
 });
