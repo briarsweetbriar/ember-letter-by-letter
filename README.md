@@ -3,12 +3,8 @@
 
 # ember-letter-by-letter
 
-Write text letter by letter.
+Check out the [interactive documentation](http://null-null-null.github.io/ember-letter-by-letter/)!
 
 ## Installation
 
 `ember install ember-letter-by-letter`
-
-## Usage
-
-`{{ember-lxl text="Hey! I'm gonna get written letter by letter!"}}`

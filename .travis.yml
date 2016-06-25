@@ -1,41 +1,41 @@
----
 language: node_js
 node_js:
-  - "6"
-
+- '6'
 sudo: required
 dist: trusty
-
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 env:
-  - EMBER_TRY_SCENARIO=default
-  - EMBER_TRY_SCENARIO=ember-release
-  - EMBER_TRY_SCENARIO=ember-beta
-  - EMBER_TRY_SCENARIO=ember-canary
-
+- EMBER_TRY_SCENARIO=default
+- EMBER_TRY_SCENARIO=ember-release
+- EMBER_TRY_SCENARIO=ember-beta
+- EMBER_TRY_SCENARIO=ember-canary
 matrix:
   fast_finish: true
   allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
-
+  - env: EMBER_TRY_SCENARIO=ember-canary
 before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sudo apt-get update
-  - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
-  - npm config set progress false
-  - npm install -g bower
-  - npm install -g npm@^3
-
+- export CHROME_BIN=/usr/bin/google-chrome
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sudo apt-get update
+- sudo apt-get install -y libappindicator1 fonts-liberation
+- wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+- sudo dpkg -i google-chrome*.deb
+- npm config set progress false
+- npm install -g bower
+- npm install -g npm@^3
 install:
-  - npm install
-  - bower install
-
+- npm install
+- bower install
 script:
-  - ember try $EMBER_TRY_SCENARIO test
+- ember try $EMBER_TRY_SCENARIO test
+deploy:
+  provider: npm
+  email: null@ember.theater
+  api_key:
+    secure: xGL6QNY4So4CiFRzrN1W6KFILcMpD4C28bNZFSETMNY6VWiB4+KAGrMcKAaR5d0yWEgDMrVpS8noGnJYGLzPUmVmXdra05WSZc/fjmLGFKrU1DkKMFLfnxTQuLqFGfX0pfVdTDmczH0FX1hlk7dRyOone4JoFShrd/mIBUzO4ITfPHcldqwMqDKy18F3bdh+5gPb/PPlFeW/r3WslyhMfKnjqNCGe8B1kgMJL1nNuviatzJeUBuwfBiKRfzblXEhr684ggA15dzQh2JqV1p3Ji4iy71AeNeaBYdAAWQenJuKnDqKSLvXxQakYokIwqNPHcSw8ceGqAV97oThdRWy6LVZKWipTlVqtmr9tqUDQtS2AOQdbXNwuHXm+QcGqSp5X8u+9wT2BJkJInGdXIxoznYzinnVArq/F3aoG4MzegxyM/ASQ3dgH86MLV2xzi7u46yj4f6t7KvR5gWm2ynbDnOnF4iFK1dZqSGNYRxx9YOorIghV4c98B1mdWR6Cu+nPN/eHnReB7vAiesluvGTzdvV7/f+D427BzgFH8oEan3kVcDYmnUeF6bwe5ocmuplJhemXvNV8CjTbRobjfqxL4ziOzwN6oA38kh6dXXqBm3aEMsgkwx1dyJA6iPsC2Vh2CAJw/K/47Qh8K9p6IdoaG4VYqlRZhXxcE5dQ2+9AA0=
+  on:
+    tags: true
+    repo: null-null-null/ember-letter-by-letter
