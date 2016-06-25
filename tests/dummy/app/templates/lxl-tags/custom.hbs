@@ -1,1 +1,43 @@
-{{outlet}}
+<h3>Custom</h3>
+
+<p class="margin-top">To create custom lxl-tags, run this in the command line:</p>
+
+{{format-markdown '`ember g lxl-tag my-lxl-tag`'}}
+
+<p>This will create the file <code>app/lxl-tags/my-lxl-tag.js</code>, which has three functions:</p>
+
+<ul>
+  <li><code>open</code> executes when the lxl-tag is preceeded by a #.</li>
+
+  <li><code>close</code> executes when the lxl-tag is preceeded by a /.</li>
+
+  <li><code>execute</code> executes when the lxl-tag is preceeded by neither a # or a /.</li>
+</ul>
+
+<p>All three receive two arguments. The first is the containing <code>ember-lxl</code> component, which you can modify directly. The second is an array of params, which receives any arguments you passed into the lxl-tag. These arguments are typically seperated by spaces, but quoted content will be respected:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="[[my-lxl-tag arg1 \'arg2 is a string\', 3, true, false]]"
+}}
+```
+
+```js
+open(lxlContainer, params) {
+  console.log(params); // ["arg1", "arg2 is a string", 3, true, false]
+}
+```'}}
+
+<p>In addition, you can pass in hashes and arrays as params:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="[[my-lxl-tag arg1 (array 1 2 3) (hash foo=bar baz=(hash x=false y=(array cat dog)))]]"
+}}
+```
+
+```js
+open(lxlContainer, params) {
+  console.log(params); // ["arg1", [1, 2, 3], { foo: "bar", baz: { x: false, y: ["cat", "dog"]}}]
+}
+```'}}
