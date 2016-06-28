@@ -21,6 +21,8 @@ export default Controller.extend({
       route: 'tween-effect',
       name: 'tweenEffect'
     }, {
+      route: 'callbacks'
+    }, {
       route: 'keys'
     }]
   }, {

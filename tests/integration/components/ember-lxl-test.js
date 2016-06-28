@@ -99,11 +99,11 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   });
 
   set(this, 'paused', () => {
-    assert.ok(true, 'ran onPause callback');
+    assert.ok(true, 'ran onPageEnd callback');
   });
 
   set(this, 'resumed', () => {
-    assert.ok(true, 'ran onResume callback');
+    assert.ok(true, 'ran onPageStart callback');
   });
 
   this.render(hbs`
@@ -113,8 +113,8 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
         cps=10000000000
         tweenRate=0
         onComplete=(action completed)
-        onPause=(action paused)
-        onResume=(action resumed)
+        onPageEnd=(action paused)
+        onPageStart=(action resumed)
       }}
     </div>
   `);

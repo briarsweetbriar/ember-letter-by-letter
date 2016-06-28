@@ -57,15 +57,15 @@ export default Component.extend(EKMixin, {
     }
   },
 
-  _notifyPause() {
-    if (isPresent(this.attrs.onPause)) {
-      this.attrs.onPause();
+  _notifyPageEnd() {
+    if (isPresent(this.attrs.onPageEnd)) {
+      this.attrs.onPageEnd();
     }
   },
 
-  _notifyResume() {
-    if (isPresent(this.attrs.onResume)) {
-      this.attrs.onResume();
+  _notifyPageStart() {
+    if (isPresent(this.attrs.onPageStart)) {
+      this.attrs.onPageStart();
     }
   },
 
@@ -75,6 +75,7 @@ export default Component.extend(EKMixin, {
     this._bindPressEvents();
     this._bindKeys();
     this._bindResize();
+    this._notifyPageStart();
     this._scrollToFirstWord();
   },
 
@@ -145,7 +146,7 @@ export default Component.extend(EKMixin, {
     if (isBlank(nextPageFirstWord)) {
       this._notifyComplete();
     } else {
-      this._notifyResume();
+      this._notifyPageStart();
     }
   },
 
@@ -257,7 +258,7 @@ export default Component.extend(EKMixin, {
       set(this, 'instantWritePage', false);
     }
 
-    this._notifyPause();
+    this._notifyPageEnd();
   },
 
   _writeWord($word, index) {

@@ -12,6 +12,7 @@ Router.map(function() {
     this.route('tween-rate');
     this.route('tween-effect');
     this.route('keys');
+    this.route('callbacks');
   });
   this.route('lxl-tags', function() {
     this.route('custom');

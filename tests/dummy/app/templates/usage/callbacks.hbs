@@ -1,0 +1,24 @@
+<h3>Callbacks</h3>
+
+<p class="margin-top">In addition, <code>ember-lxl</code> supports several callbacks:</p>
+
+<ul>
+  <li id="on_page_start"><code>onPageStart</code>: Triggers on new page</li>
+  <li id="on_page_end"><code>onPageEnd</code>: Triggers at the end of a page</li>
+  <li id="on_complete"><code>onComplete</code>: Triggers when the whole text is complete</li>
+</ul>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use the default cps of 25 milliseconds."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis lorem et vulputate venenatis. Nam mattis mattis molestie. Pellentesque euismod gravida arcu, quis pellentesque nibh finibus ac. Quisque neque sapien, ultricies in aliquam vel, porttitor non tellus. Sed et mi tempus, pulvinar nisl sit amet, luctus nunc. Morbi sed magna accumsan, faucibus lorem vitae, posuere lectus. Nullam rutrum, lacus a finibus vestibulum, tortor metus dictum mi, sed euismod risus velit vitae ligula. Vestibulum fermentum dolor consequat sollicitudin lacinia. Donec ultricies bibendum sollicitudin. Donec egestas risus ex, imperdiet hendrerit ligula interdum sed. Etiam lobortis felis felis, eu tincidunt arcu luctus viverra. Ut efficitur vel nunc sed pellentesque."
+    onPageStart=(action "highlightPageStart")
+    onPageEnd=(action "highlightPageEnd")
+    onComplete=(action "highlightComplete")
+  }}
+{{/lxl-container}}
