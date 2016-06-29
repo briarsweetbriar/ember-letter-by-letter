@@ -6,22 +6,28 @@
   <li id="on_page_start"><code>onPageStart</code>: Triggers on new page</li>
   <li id="on_page_end"><code>onPageEnd</code>: Triggers at the end of a page</li>
   <li id="on_complete"><code>onComplete</code>: Triggers when the whole text is complete</li>
+  <li id="on_stopped_writing"><code>onStoppedWriting</code>: Triggers when the text pauses, for whatever reason</li>
+  <li id="on_started_writing"><code>onStartedWriting</code>: Triggers when the text starts, for whatever reason</li>
 </ul>
 
 {{format-markdown '```hbs
 {{ember-lxl
-  text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis lorem et vulputate venenatis. Nam mattis mattis molestie. Pellentesque euismod gravida arcu, quis pellentesque nibh finibus ac. Quisque neque sapien, ultricies in aliquam vel, porttitor non tellus. Sed et mi tempus, pulvinar nisl sit amet, luctus nunc. Morbi sed magna accumsan, faucibus lorem vitae, posuere lectus. Nullam rutrum, lacus a finibus vestibulum, tortor metus dictum mi, sed euismod risus velit vitae ligula. Vestibulum fermentum dolor consequat sollicitudin lacinia. Donec ultricies bibendum sollicitudin. Donec egestas risus ex, imperdiet hendrerit ligula interdum sed. Etiam lobortis felis felis, eu tincidunt arcu luctus viverra. Ut efficitur vel nunc sed pellentesque."
+  text="Lorem ipsum dolor sit amet, [[pause 1000]]consectetur adipiscing elit. Integer [[pause 1000]]iaculis lorem et vulputate venenatis. [[pause 1000]]Nam mattis mattis molestie. [[pause 1000]]Pellentesque euismod gravida arcu, [[pause 1000]]quis pellentesque nibh finibus ac. [[pause 1000]]Quisque neque sapien, [[pause 1000]]ultricies in aliquam vel, [[pause 1000]]porttitor non tellus. [[pause 1000]]Sed et mi tempus, [[pause 1000]]pulvinar nisl sit amet, [[pause 1000]]luctus nunc. [[pause 1000]]Morbi sed magna accumsan, [[pause 1000]]faucibus lorem vitae, [[pause 1000]]posuere lectus. [[pause 1000]]Nullam rutrum, [[pause 1000]]lacus a finibus vestibulum, [[pause 1000]]tortor metus dictum mi, [[pause 1000]]sed euismod risus velit vitae ligula. [[pause 1000]]Vestibulum fermentum dolor consequat sollicitudin lacinia. [[pause 1000]]Donec ultricies bibendum sollicitudin. [[pause 1000]]Donec egestas risus ex, [[pause 1000]]imperdiet hendrerit ligula interdum sed. [[pause 1000]]Etiam lobortis felis felis, [[pause 1000]]eu tincidunt arcu luctus viverra. [[pause 1000]]Ut efficitur vel nunc sed pellentesque."
   onPageStart=(action "highlightPageStart")
   onPageEnd=(action "highlightPageEnd")
   onComplete=(action "highlightComplete")
+  onStoppedWriting=(action "highlightStoppedWriting")
+  onStartedWriting=(action "highlightStartedWriting")
 }}
 ```'}}
 
 {{#lxl-container}}
   {{ember-lxl
-    text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis lorem et vulputate venenatis. Nam mattis mattis molestie. Pellentesque euismod gravida arcu, quis pellentesque nibh finibus ac. Quisque neque sapien, ultricies in aliquam vel, porttitor non tellus. Sed et mi tempus, pulvinar nisl sit amet, luctus nunc. Morbi sed magna accumsan, faucibus lorem vitae, posuere lectus. Nullam rutrum, lacus a finibus vestibulum, tortor metus dictum mi, sed euismod risus velit vitae ligula. Vestibulum fermentum dolor consequat sollicitudin lacinia. Donec ultricies bibendum sollicitudin. Donec egestas risus ex, imperdiet hendrerit ligula interdum sed. Etiam lobortis felis felis, eu tincidunt arcu luctus viverra. Ut efficitur vel nunc sed pellentesque."
+    text="Lorem ipsum dolor sit amet, [[pause 1000]]consectetur adipiscing elit. Integer [[pause 1000]]iaculis lorem et vulputate venenatis. [[pause 1000]]Nam mattis mattis molestie. [[pause 1000]]Pellentesque euismod gravida arcu, [[pause 1000]]quis pellentesque nibh finibus ac. [[pause 1000]]Quisque neque sapien, [[pause 1000]]ultricies in aliquam vel, [[pause 1000]]porttitor non tellus. [[pause 1000]]Sed et mi tempus, [[pause 1000]]pulvinar nisl sit amet, [[pause 1000]]luctus nunc. [[pause 1000]]Morbi sed magna accumsan, [[pause 1000]]faucibus lorem vitae, [[pause 1000]]posuere lectus. [[pause 1000]]Nullam rutrum, [[pause 1000]]lacus a finibus vestibulum, [[pause 1000]]tortor metus dictum mi, [[pause 1000]]sed euismod risus velit vitae ligula. [[pause 1000]]Vestibulum fermentum dolor consequat sollicitudin lacinia. [[pause 1000]]Donec ultricies bibendum sollicitudin. [[pause 1000]]Donec egestas risus ex, [[pause 1000]]imperdiet hendrerit ligula interdum sed. [[pause 1000]]Etiam lobortis felis felis, [[pause 1000]]eu tincidunt arcu luctus viverra. [[pause 1000]]Ut efficitur vel nunc sed pellentesque."
     onPageStart=(action "highlightPageStart")
     onPageEnd=(action "highlightPageEnd")
     onComplete=(action "highlightComplete")
+    onStoppedWriting=(action "highlightStoppedWriting")
+    onStartedWriting=(action "highlightStartedWriting")
   }}
 {{/lxl-container}}

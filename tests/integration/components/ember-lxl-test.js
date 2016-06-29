@@ -90,7 +90,7 @@ test('it gradually fades the characters in', function(assert) {
 });
 
 test('it pauses once it reaches the bottom of the container', function(assert) {
-  assert.expect(12);
+  assert.expect(19);
 
   const done = assert.async();
 
@@ -106,6 +106,14 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     assert.ok(true, 'ran onPageStart callback');
   });
 
+  set(this, 'started', () => {
+    assert.ok(true, 'ran onStartedWriting callback');
+  });
+
+  set(this, 'stopped', () => {
+    assert.ok(true, 'ran onStoppedWriting callback');
+  });
+
   this.render(hbs`
     <div style="width: 250px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
@@ -115,6 +123,8 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
         onComplete=(action completed)
         onPageEnd=(action paused)
         onPageStart=(action resumed)
+        onStartedWriting=(action started)
+        onStoppedWriting=(action stopped)
       }}
     </div>
   `);

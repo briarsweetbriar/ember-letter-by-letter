@@ -61,11 +61,25 @@ export default Component.extend(EKMixin, {
     if (isPresent(this.attrs.onPageEnd)) {
       this.attrs.onPageEnd();
     }
+    this._notifyStoppedWriting();
   },
 
   _notifyPageStart() {
     if (isPresent(this.attrs.onPageStart)) {
       this.attrs.onPageStart();
+    }
+    this._notifyStartedWriting();
+  },
+
+  _notifyStartedWriting() {
+    if (isPresent(this.attrs.onStartedWriting)) {
+      this.attrs.onStartedWriting();
+    }
+  },
+
+  _notifyStoppedWriting() {
+    if (isPresent(this.attrs.onStoppedWriting)) {
+      this.attrs.onStoppedWriting();
     }
   },
 

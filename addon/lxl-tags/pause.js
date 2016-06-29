@@ -39,7 +39,9 @@ export default LXLTag.extend({
 
   execute(lxlContainer, params) {
     return new Promise((resolve) => {
-      if (get(lxlContainer, 'isInstant')) { resolve(); }
+      if (get(lxlContainer, 'isInstant')) { return resolve(); }
+
+      lxlContainer._notifyStoppedWriting();
 
       setProperties(this, {
         lxlContainer,
@@ -72,6 +74,8 @@ export default LXLTag.extend({
     if (isDestroyed) { return; }
 
     resolve();
+
+    lxlContainer._notifyStartedWriting();
 
     later(() => {
       get(lxlContainer, 'keys').forEach((key) => {

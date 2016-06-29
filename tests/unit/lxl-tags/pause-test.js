@@ -10,7 +10,11 @@ const {
 
 const { run: { later } } = Ember;
 
-const LxlContainer = Ember.Object.extend(Evented, { keys: [] });
+const LxlContainer = Ember.Object.extend(Evented, {
+  keys: [],
+  _notifyStartedWriting() {},
+  _notifyStoppedWriting() {}
+});
 
 module('Unit | LXLTag | pause');
 
@@ -35,6 +39,27 @@ module('Unit | LXLTag | pause');
 
       done();
     }, 10);
+  });
+
+  test(`${methodName} triggers _notifyStoppedWriting and _notifyStartedWriting`, function(assert) {
+    const done = assert.async();
+
+    assert.expect(2);
+
+    const pause = Pause.create();
+    const lxlContainer = LxlContainer.create({
+      _notifyStartedWriting() {
+        assert.ok(true, '_notifyStartedWriting ran');
+
+        done();
+      },
+
+      _notifyStoppedWriting() {
+        assert.ok(true, '_notifyStoppedWriting ran');
+      }
+    });
+
+    pause[methodName](lxlContainer, [100]);
   });
 
   test(`${methodName} resolves after the provided duration`, function(assert) {
