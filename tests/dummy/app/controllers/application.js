@@ -13,6 +13,11 @@ export default Controller.extend({
     route: 'usage',
     name: 'Usage',
     sections: [{
+      route: 'callbacks',
+      name: 'Callbacks'
+    }, {
+      route: 'instant'
+    }, {
       route: 'cps'
     }, {
       route: 'tween-rate',
@@ -20,8 +25,6 @@ export default Controller.extend({
     }, {
       route: 'tween-effect',
       name: 'tweenEffect'
-    }, {
-      route: 'callbacks'
     }, {
       route: 'keys'
     }]
