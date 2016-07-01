@@ -14,6 +14,7 @@ Router.map(function() {
     this.route('keys');
     this.route('callbacks');
     this.route('instant');
+    this.route('scrollable');
   });
   this.route('lxl-tags', function() {
     this.route('custom');

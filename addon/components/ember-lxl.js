@@ -22,6 +22,7 @@ const {
   get,
   getOwner,
   getProperties,
+  guidFor,
   isBlank,
   isPresent,
   set,
@@ -44,12 +45,16 @@ export default Component.extend(EKMixin, {
   cps: 25,
   tweenEffect: {},
   tweenRate: 25,
+  scrollOptions: {
+    suppressScrollX: true
+  },
 
   activeWordIndex: 0,
+  _scrolledAheadIndex: 0,
   activeTags: {},
   classNames: ['lxl-container'],
 
-  isInstant: or('instantWritePage', 'instant'),
+  isInstant: or('instantWritePage', 'instant', '_scrolledAhead'),
 
   _notifyComplete() {
     if (isPresent(this.attrs.onComplete)) {
@@ -89,8 +94,15 @@ export default Component.extend(EKMixin, {
     this._bindPressEvents();
     this._bindKeys();
     this._bindResize();
+    this._initializePerfectScrollbar();
     this._notifyPageStart();
     this._scrollToFirstWord();
+  },
+
+  willDestroyElement(...args) {
+    this._super(...args);
+
+    this._removePerfectScrollbar();
   },
 
   _bindPressEvents() {
@@ -117,6 +129,25 @@ export default Component.extend(EKMixin, {
         this._scrollToWord(currentPageFirstWord);
       });
     }
+  },
+
+  _initializePerfectScrollbar() {
+    if (get(this, 'scrollable')) {
+      const guid = guidFor(this);
+      PerfectScrollbar.initialize(this.$()[0], get(this, 'scrollOptions'));
+      Ember.$(document).on(`ps-scroll-down.${guid}`, (event) => {
+        if (event.target.id === guid) {
+          set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
+          set(this, '_scrolledAheadIndex', this._findScrolledAheadIndex());
+          this._processWord(get(this, 'activeWordIndex'));
+        }
+      });
+    }
+  },
+
+  _removePerfectScrollbar() {
+    PerfectScrollbar.destroy(this.element);
+    Ember.$(document).off(`ps-scroll-down.${guidFor(this)}`);
   },
 
   _scrollToFirstWord() {
@@ -177,6 +208,22 @@ export default Component.extend(EKMixin, {
     this._processWord($words.index($word));
   },
 
+  _findScrolledAheadIndex() {
+    const wordElements = get(this, 'wordElements');
+    const $container = this.$().parent();
+    const offsetTop = $container.offset().top;
+
+    let index = 0;
+
+    wordElements.find((element, wordIndex) => {
+      index = wordIndex;
+      const $element = this.$(element);
+      return $element.offset().top >= offsetTop;
+    });
+
+    return index;
+  },
+
   _findNextPageFirstWord() {
     const {
       currentPageLastWordIndex,
@@ -185,12 +232,18 @@ export default Component.extend(EKMixin, {
     const $container = this.$().parent();
     const offsetBottom = $container.offset().top + $container.height();
 
-    return wordElements.slice(currentPageLastWordIndex + 1).find((element) => {
+    return wordElements.slice(currentPageLastWordIndex).find((element) => {
       const $element = this.$(element);
 
       return $element.offset().top + $element.height() >= offsetBottom;
     });
   },
+
+  _scrolledAhead: computed('activeWordIndex', '_scrolledAheadIndex', {
+    get() {
+      return get(this, '_scrolledAheadIndex') > get(this, 'activeWordIndex');
+    }
+  }).readOnly(),
 
   cpsRate: computed('cps', {
     get() {
@@ -242,6 +295,8 @@ export default Component.extend(EKMixin, {
     const $words = get(this, '$words');
 
     if (isBlank($words)) { return; }
+
+    set(this, 'activeWordIndex', index);
 
     const $word = $words.eq(index);
     const nextPageFirstWord = get(this, 'nextPageFirstWord');

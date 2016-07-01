@@ -3,7 +3,8 @@
     "document",
     "window",
     "-Promise",
-    "motion"
+    "motion",
+    "PerfectScrollbar"
   ],
   "browser": true,
   "boss": true,

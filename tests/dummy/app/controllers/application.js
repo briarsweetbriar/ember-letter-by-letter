@@ -18,6 +18,8 @@ export default Controller.extend({
     }, {
       route: 'instant'
     }, {
+      route: 'scrollable'
+    }, {
       route: 'cps'
     }, {
       route: 'tween-rate',

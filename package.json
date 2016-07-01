@@ -51,6 +51,7 @@
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3",
     "ember-keyboard": "1.1.0",
+    "ember-perfect-scrollbar": "0.0.2",
     "ember-popmotion": "5.0.11"
   },
   "ember-addon": {

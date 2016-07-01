@@ -4,13 +4,8 @@
 
 {{format-markdown '`ember install ember-letter-by-letter;`'}}
 
-<p>Then, in your <code>ember-cli-build.js</code>:</p>
+<p>Then, in your <code>styles/app.scss</code>:</p>
 
-{{format-markdown '```js
-var app = new EmberApp(defaults, {
-  // Add options here
-  babel:{
-    includePolyfill: true
-  }
-});
+{{format-markdown '```css
+@import "ember-lxl/ember-lxl";
 ```'}}

@@ -161,7 +161,6 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   }, 1000);
 });
 
-
 test('text can be instawrote with a click', function(assert) {
   assert.expect(2);
 
@@ -197,5 +196,21 @@ test('text can be instawrote with a click', function(assert) {
     assert.equal(this.$('.lxl-word:last').css('opacity'), 1, 'last word faded in');
 
     done();
-  }, 175);
+  }, 250);
+});
+
+test('text is not scrollable by default', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`{{ember-lxl text="Word, I have a word."}}`);
+
+  assert.ok(!this.$('.lxl-container').hasClass('ps-container'), 'scrollbar not applied');
+});
+
+test('text can be scrollable', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`{{ember-lxl text="Word, I have a word." scrollable=true}}`);
+
+  assert.ok(this.$('.lxl-container').hasClass('ps-container'), 'scrollbar applied');
 });
