@@ -93,7 +93,6 @@ export default Component.extend(EKMixin, {
 
     this._bindPressEvents();
     this._bindKeys();
-    this._bindResize();
     this._initializePerfectScrollbar();
     this._notifyPageStart();
     this._scrollToFirstWord();
@@ -117,18 +116,6 @@ export default Component.extend(EKMixin, {
     keys.forEach((key) => {
       this.on(keyDown(key), this._advanceText);
     });
-  },
-
-  _bindResize() {
-    const resizeService = get(this, 'resizeService');
-
-    if (isPresent(resizeService)) {
-      resizeService.on('debouncedDidResize', () => {
-        const currentPageFirstWord = get(this, 'currentPageFirstWord');
-
-        this._scrollToWord(currentPageFirstWord);
-      });
-    }
   },
 
   _initializePerfectScrollbar() {

@@ -38,7 +38,7 @@ module('Unit | LXLTag | pause');
       assert.ok(resolved, 'promise resolves at the start of the next run loop');
 
       done();
-    }, 10);
+    }, 25);
   });
 
   test(`${methodName} triggers _notifyStoppedWriting and _notifyStartedWriting`, function(assert) {
