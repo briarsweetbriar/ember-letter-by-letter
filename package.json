@@ -1,6 +1,6 @@
 {
   "name": "ember-letter-by-letter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Write text letter by letter with Ember.js.",
   "directories": {
     "doc": "doc",
@@ -49,7 +49,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3",
-    "ember-keyboard": "1.1.0",
+    "ember-keyboard": "2.0.0",
     "ember-perfect-scrollbar": "0.0.2",
     "ember-popmotion": "5.0.11"
   },
