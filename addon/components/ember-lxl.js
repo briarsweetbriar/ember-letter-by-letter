@@ -6,6 +6,7 @@ import {
   keyDown,
   EKMixin
 } from 'ember-keyboard';
+import motion from 'ember-popmotion';
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
