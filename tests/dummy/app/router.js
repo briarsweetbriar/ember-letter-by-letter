@@ -24,6 +24,7 @@ Router.map(function() {
     this.route('tween-effect');
     this.route('pause');
   });
+  this.route('lxl-tween-adapters');
 });
 
 export default Router;

@@ -46,5 +46,7 @@ export default Controller.extend({
     }, {
       route: 'tween-effect',
     }]
+  }, {
+    route: 'lxl-tween-adapters'
   }]
 });

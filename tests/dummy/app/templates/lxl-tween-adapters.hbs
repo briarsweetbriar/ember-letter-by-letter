@@ -1,0 +1,76 @@
+<h2 class="margin-bottom">lxl-tween-adapters</h2>
+
+<p><code>ember-letter-by-letter</code> doesn't come with an animation library of it's own, but rather leaves the choice to you regarding which to use. To select one, simply specify a <code>tweenLibrary</code>. Out-of-the-box, <code>ember-letter-by-letter</code> comes with three light-weight adapters for <code>popmotion</code>, <code>velocity</code>, and (with limitations) <code>jquery</code>.</p>
+
+<p>Note that if you want to use <code>velocity</code> or <code>popmotion</code>, you will have to install them. Check out the <a href="https://github.com/embersherpa/ember-cli-velocity" target="_blank">ember-cli-velocity</a> and <a href="https://github.com/null-null-null/ember-popmotion" target="_blank">ember-popmotion</a> repos for more info.</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use popmotion.js!"
+  tweenLibrary="popmotion"
+  tweenEffect=(hash x=(hash to=0 from=100))
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use popmotion.js!"
+    tweenLibrary="popmotion"
+    tweenEffect=(hash x=(hash to=0 from=100))
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use velocity.js!"
+  tweenLibrary="velocity"
+  tweenEffect=(hash translateY=50)
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use velocity.js!"
+    tweenLibrary="velocity"
+    tweenEffect=(hash translateY=50)
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="By default, I use jquery (not jquery-ui)! And look, I only fade in. . . . Other animation effects do not work"
+  tweenEffect=(hash x=(hash to=0 from=100))
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="By default, I use jquery (not jquery-ui)! And look, I only fade in. . . . Other animation effects do not work"
+    tweenLibrary="jquery"
+    tweenEffect=(hash x=(hash to=0 from=100))
+  }}
+{{/lxl-container}}
+
+<h3>Config</h3>
+
+<p class="margin-top">You can also specify the tween library in your <code>config/environment.js</code>:</p>
+
+{{format-markdown '```js
+module.exports = function(environment) {
+  var ENV = {
+    emberLetterByLetter: {
+      tweenLibrary: "popmotion"
+    }
+  };
+
+  return ENV;
+}
+```'}}
+
+<h3 class="margin-top">Custom</h3>
+
+<p class="margin-top">If you want to use a different library, you can create your own adapter by:</p>
+
+{{format-markdown '`ember g lxl-tween-adapter my-tween-adapter`'}}
+
+<p>This'll create a simple Ember object with a single function, <code>animate</code>. It'll have access to the element, effect, and duration, for you to do with as you will.</p>

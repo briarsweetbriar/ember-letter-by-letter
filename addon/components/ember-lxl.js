@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-get-config';
 import layout from '../templates/components/ember-lxl';
 import addClassTo from 'ember-letter-by-letter/utils/add-class-to';
 import parseLxlTag from 'ember-letter-by-letter/utils/parse-lxl-tag';
@@ -6,7 +7,6 @@ import {
   keyDown,
   EKMixin
 } from 'ember-keyboard';
-import motion from 'ember-popmotion';
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
@@ -56,6 +56,14 @@ export default Component.extend(EKMixin, {
   classNames: ['lxl-container'],
 
   isInstant: or('instantWritePage', 'instant', '_scrolledAhead'),
+
+  tweenAdapter: computed('tweenLibrary', {
+    get() {
+      const library = get(this, 'tweenLibrary') || get(config, 'emberLetterByLetter.tweenLibrary') || 'jquery';
+
+      return getOwner(this).lookup(`lxl-tween-adapter:${library}`);
+    }
+  }),
 
   _notifyComplete() {
     if (isPresent(this.attrs.onComplete)) {
@@ -382,13 +390,8 @@ export default Component.extend(EKMixin, {
   },
 
   _tween($element) {
-    const { tweenEffect, tweenDuration } = getProperties(this, 'tweenEffect', 'tweenDuration');
+    const { tweenAdapter, tweenEffect, tweenDuration } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration');
 
-    tweenEffect.opacity = tweenEffect.opacity ? tweenEffect.opacity : { to: 1, from: 0 };
-
-    motion.tween({
-      values: tweenEffect,
-      duration: tweenDuration
-    }).on($element[0]).start();
+    tweenAdapter.animate($element, tweenEffect, tweenDuration);
   }
 });
