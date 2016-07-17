@@ -25,6 +25,7 @@ const {
   getProperties,
   guidFor,
   isBlank,
+  isNone,
   isPresent,
   set,
   setProperties
@@ -128,6 +129,8 @@ export default Component.extend(EKMixin, {
   },
 
   _initializePerfectScrollbar() {
+    if (isNone(PerfectScrollbar)) { return; }
+
     if (get(this, 'scrollable')) {
       const guid = guidFor(this);
       PerfectScrollbar.initialize(this.$()[0], get(this, 'scrollOptions'));
@@ -142,6 +145,8 @@ export default Component.extend(EKMixin, {
   },
 
   _removePerfectScrollbar() {
+    if (isNone(PerfectScrollbar)) { return; }
+
     PerfectScrollbar.destroy(this.element);
     Ember.$(document).off(`ps-scroll-down.${guidFor(this)}`);
   },
