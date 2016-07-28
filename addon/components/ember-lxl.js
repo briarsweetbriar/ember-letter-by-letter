@@ -264,7 +264,7 @@ export default Component.extend(EKMixin, {
       // and the last part matches and removes spaces, as we break on spaces to capture words.
       const regex = new RegExp(`${htmlTagRegex}|${lxlTagRegex}|[^<>\\[\\]\\s]+`, 'g');
 
-      return Ember.A(get(this, 'text').match(regex));
+      return Ember.A(get(this, 'text').toString().match(regex));
     }
   }).readOnly(),
 

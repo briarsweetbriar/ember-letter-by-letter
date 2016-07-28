@@ -18,6 +18,14 @@ moduleForComponent('ember-lxl', 'Integration | Component | ember lxl', {
   }
 });
 
+test('it coerces its text into a string', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`{{ember-lxl text=123}}`);
+
+  assert.equal(this.$('.lxl-word').text().trim(), '123', 'number coerced');
+});
+
 test('it parses words into word and letter spans', function(assert) {
   assert.expect(2);
 
