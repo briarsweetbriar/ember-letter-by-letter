@@ -253,9 +253,9 @@ export default Component.extend(EKMixin, {
     }
   }),
 
-  tweenDuration: computed('cpsRate', 'tweenRate', {
+  tweenDuration: computed('cpsRate', 'tweenRate', 'isInstant', {
     get() {
-      return get(this, 'cpsRate') * get(this, 'tweenRate');
+      return get(this, 'isInstant') ? 0 : get(this, 'cpsRate') * get(this, 'tweenRate');
     }
   }),
 
@@ -320,16 +320,18 @@ export default Component.extend(EKMixin, {
   },
 
   _markPageAsComplete(currentPageLastWordIndex) {
-    setProperties(this, {
-      currentPageLastWordIndex,
-      pageLoaded: true
-    });
+    later(() => {
+      setProperties(this, {
+        currentPageLastWordIndex,
+        pageLoaded: true
+      });
 
-    if (!get(this, 'instant')) {
-      set(this, 'instantWritePage', false);
-    }
+      if (!get(this, 'instant')) {
+        set(this, 'instantWritePage', false);
+      }
 
-    this._notifyPageEnd();
+      this._notifyPageEnd();
+    }, get(this, 'tweenDuration'));
   },
 
   _writeWord($word, index) {
@@ -392,9 +394,8 @@ export default Component.extend(EKMixin, {
   },
 
   _tween($element) {
-    const { tweenAdapter, tweenEffect, tweenDuration, isInstant } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration', 'isInstant');
-    const duration = isInstant ? 0 : tweenDuration;
+    const { tweenAdapter, tweenEffect, tweenDuration } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration');
 
-    tweenAdapter.animate($element, tweenEffect, duration);
+    tweenAdapter.animate($element, tweenEffect, tweenDuration);
   }
 });
