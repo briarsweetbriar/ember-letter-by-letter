@@ -179,6 +179,7 @@ export default Component.extend(EKMixin, {
       this._turnPage();
     } else {
       set(this, 'instantWritePage', true);
+      get(this, 'tweenAdapter').finish(this.$(`.${letterClass}`));
     }
   },
 
@@ -337,15 +338,13 @@ export default Component.extend(EKMixin, {
     } else if ($word.hasClass(lxlDomClass)) {
       this._executeDomTag($word, index);
     } else if (get(this, 'isInstant')) {
-      this._processWord(index + 1);
+      this._shortCircuitWord($word, index);
     } else {
       const letters = $word.text().split('');
 
-      $word.html(letters.map((letter) => `<span class="${letterClass}">${letter}</span>`).join(''));
+      $word.html(letters.map((letter) => `<span class="${letterClass}">${letter}</span>`).join('')).css('opacity', 1);
       this._writeLetter($word, letters.length, 0, index);
     }
-
-    $word.css('opacity', 1);
   },
 
   _writeLetter($word, wordLength, characterIndex, wordIndex) {
@@ -366,10 +365,8 @@ export default Component.extend(EKMixin, {
   },
 
   _shortCircuitWord($word, wordIndex) {
-    const text = $word.text().trim();
-
-    $word.html(text);
-
+    $word.html($word.text().trim());
+    this._tween($word);
     this._processWord(wordIndex + 1);
   },
 
@@ -395,8 +392,9 @@ export default Component.extend(EKMixin, {
   },
 
   _tween($element) {
-    const { tweenAdapter, tweenEffect, tweenDuration } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration');
+    const { tweenAdapter, tweenEffect, tweenDuration, isInstant } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration', 'isInstant');
+    const duration = isInstant ? 0 : tweenDuration;
 
-    tweenAdapter.animate($element, tweenEffect, tweenDuration);
+    tweenAdapter.animate($element, tweenEffect, duration);
   }
 });

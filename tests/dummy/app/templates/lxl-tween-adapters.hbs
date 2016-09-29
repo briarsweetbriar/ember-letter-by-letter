@@ -73,4 +73,4 @@ module.exports = function(environment) {
 
 {{format-markdown '`ember g lxl-tween-adapter my-tween-adapter`'}}
 
-<p>This'll create a simple Ember object with a single function, <code>animate</code>. It'll have access to the element, effect, and duration, for you to do with as you will.</p>
+<p>This'll create a simple Ember object with two functions. First, <code>animate</code>. It'll have access to the element, effect, and duration, for you to do with as you will. Secondly, <code>finish</code>, which will recieve an array containing all the letter elements in the <code>ember-lxl</code> tag. This function should terminate any ongoing animations and finish them immediately. Principally, this is for when the user clicks on the tag and the text autocompletes.</p>

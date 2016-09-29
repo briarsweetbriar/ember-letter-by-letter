@@ -5,5 +5,9 @@ export default Ember.Object.extend({
     effect.opacity = effect.opacity ? effect.opacity : [1, 0];
 
     return Ember.$.Velocity.animate($element, effect, { duration });
+  },
+
+  finish($elements) {
+    $elements.velocity('finish');
   }
 });

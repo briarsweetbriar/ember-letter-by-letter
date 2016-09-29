@@ -67,8 +67,8 @@ test('it executes lxl-tags', function(assert) {
   assert.equal(this.$('.lxl-word').length - this.$('.lxl-tag').length, 12, 'correct number of lxl-words');
 
   later(() => {
-    assert.equal(this.$('.lxl-word:nth(1)').css('opacity'), 1, 'second word faded in');
-    assert.equal(this.$('.lxl-word:nth(10)').css('opacity'), 1, 'last fast word faded in');
+    assert.equal(this.$('.lxl-word:nth(2)').css('opacity'), 1, 'second word faded in');
+    assert.equal(this.$('.lxl-word:nth(11)').css('opacity'), 1, 'last fast word faded in');
     assert.ok(parseFloat(this.$('.lxl-word:last .lxl-letter:last').css('opacity')) < 1, 'last letter not faded in');
 
     done();
