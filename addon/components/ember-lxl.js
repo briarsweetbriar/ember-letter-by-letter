@@ -101,6 +101,10 @@ export default Component.extend(EKMixin, {
   didInsertElement(...args) {
     this._super(...args);
 
+    Ember.run.scheduleOnce('afterRender', this, this._didInsertElement);
+  },
+
+  _didInsertElement() {
     this._bindPressEvents();
     this._bindKeys();
     this._initializePerfectScrollbar();
