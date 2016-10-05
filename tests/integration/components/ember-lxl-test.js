@@ -201,6 +201,14 @@ test('text can be instawrote with a click', function(assert) {
   }, 100);
 
   later(() => {
+    this.$('.lxl-container').trigger('mouseup');
+  }, 125);
+
+  later(() => {
+    this.$('.lxl-container').trigger('mouseup');
+  }, 150);
+
+  later(() => {
     assert.equal(this.$('.lxl-word:last').css('opacity'), 1, 'last word faded in');
 
     done();
