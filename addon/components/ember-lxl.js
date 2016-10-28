@@ -28,8 +28,7 @@ const {
   isBlank,
   isNone,
   isPresent,
-  set,
-  setProperties
+  set
 } = Ember;
 
 const {
@@ -113,7 +112,18 @@ export default Component.extend(EKMixin, ResizeAware, {
 
   debouncedDidResize() {
     this._scrollToWord(get(this, 'currentPageFirstWord'));
-    this._processWord();
+
+    const nextPageFirstWord = set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
+    const nextPageFirstWordIndex = get(this, '$words').index(nextPageFirstWord);
+    const activeWordIndex = get(this, 'activeWordIndex');
+
+    if (nextPageFirstWordIndex < activeWordIndex) {
+      this.incrementProperty('activeWordIndex');
+      this._undoPreviousWord();
+      this._markPageAsComplete();
+    } else if (nextPageFirstWordIndex > activeWordIndex) {
+      this._doNextWord();
+    }
   },
 
   _didInsertElement() {
@@ -156,7 +166,7 @@ export default Component.extend(EKMixin, ResizeAware, {
           set(this, '_scrolledAheadIndex', this._findScrolledAheadIndex());
           if (!get(this, 'isWriting')) {
             this._notifyPageStart();
-            this._processWord();
+            this._doNextWord();
           }
         }
       });
@@ -225,7 +235,7 @@ export default Component.extend(EKMixin, ResizeAware, {
 
     set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
 
-    this._processWord();
+    this._doNextWord();
   },
 
   _findScrolledAheadIndex() {
@@ -245,14 +255,11 @@ export default Component.extend(EKMixin, ResizeAware, {
   },
 
   _findNextPageFirstWord() {
-    const {
-      currentPageLastWordIndex,
-      wordElements
-    } = getProperties(this, 'currentPageLastWordIndex', 'wordElements');
+    const wordElements = get(this, 'wordElements');
     const $container = this.$().parent();
     const offsetBottom = $container.offset().top + $container.height();
 
-    return wordElements.slice(currentPageLastWordIndex).find((element) => {
+    return wordElements.find((element) => {
       const $element = this.$(element);
 
       return $element.offset().top + $element.height() >= offsetBottom;
@@ -311,7 +318,7 @@ export default Component.extend(EKMixin, ResizeAware, {
     }
   }).readOnly(),
 
-  _processWord() {
+  _doNextWord() {
     const $words = get(this, '$words');
 
     if (isBlank($words)) { return; }
@@ -328,21 +335,18 @@ export default Component.extend(EKMixin, ResizeAware, {
       (isPresent(nextPageFirstWord) && index >= $words.index(nextPageFirstWord));
 
     if (pageIsLoaded) {
-      this._markPageAsComplete(index);
+      this._markPageAsComplete();
       this.decrementProperty('activeWordIndex');
     } else {
       set(this, 'pageLoaded', false);
 
-      this._writeWord($word, index);
+      this._writeWord($word);
     }
   },
 
-  _markPageAsComplete(currentPageLastWordIndex) {
+  _markPageAsComplete() {
     later(() => {
-      setProperties(this, {
-        currentPageLastWordIndex,
-        pageLoaded: true
-      });
+      set(this, 'pageLoaded', true);
 
       if (!get(this, 'instant')) {
         set(this, 'instantWritePage', false);
@@ -379,7 +383,7 @@ export default Component.extend(EKMixin, ResizeAware, {
       if (characterIndex + 1 < wordLength) {
         this._writeLetter($word, wordLength, characterIndex + 1);
       } else {
-        this._processWord();
+        this._doNextWord();
       }
     }, cpsRate);
   },
@@ -387,7 +391,7 @@ export default Component.extend(EKMixin, ResizeAware, {
   _shortCircuitWord($word) {
     $word.html($word.text().trim());
     this._tween($word);
-    this._processWord();
+    this._doNextWord();
   },
 
   _executeCustomTag(text) {
@@ -401,19 +405,40 @@ export default Component.extend(EKMixin, ResizeAware, {
     }
 
     tag[method](this, params).then(() => {
-      this._processWord();
+      this._doNextWord();
     });
   },
 
   _executeDomTag($tag) {
     this._tween($tag);
 
-    this._processWord();
+    this._doNextWord();
   },
 
   _tween($element) {
     const { tweenAdapter, tweenEffect, tweenDuration } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration');
 
     tweenAdapter.animate($element, tweenEffect, tweenDuration);
+  },
+
+  _undoPreviousWord() {
+    const $words = get(this, '$words');
+
+    if (isBlank($words)) { return; }
+
+    const index = this.decrementProperty('activeWordIndex');
+    const $word = $words.eq(index);
+    const nextPageFirstWord = get(this, 'nextPageFirstWord');
+
+    if ($word.css('opacity') !== '0' && index >= $words.index(nextPageFirstWord)) {
+      this._undoWord($word, index);
+    }
+  },
+
+  _undoWord($word) {
+    if (!$word.hasClass(lxlTagClass)) {
+      $word.css('opacity', 0);
+    }
+    this._undoPreviousWord();
   }
 });
