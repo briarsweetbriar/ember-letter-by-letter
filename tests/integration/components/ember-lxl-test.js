@@ -164,9 +164,11 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
     assert.equal(this.$('.lxl-letter').length, 52, 'it completes writing');
 
     this.$('.lxl-container').trigger('mouseup');
-
-    done();
   }, 1000);
+
+  later(() => {
+    done();
+  }, 1250);
 });
 
 test('text can be instawrote with a click', function(assert) {

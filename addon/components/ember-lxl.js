@@ -7,6 +7,7 @@ import {
   keyDown,
   EKMixin
 } from 'ember-keyboard';
+import ResizeAware from 'ember-resize/mixins/resize-aware';
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
@@ -37,10 +38,11 @@ const {
   }
 } = Ember;
 
+const { inject: { service } } = Ember;
 const { run: { later } } = Ember;
 const { or } = computed;
 
-export default Component.extend(EKMixin, {
+export default Component.extend(EKMixin, ResizeAware, {
   layout,
 
   keys: [],
@@ -51,7 +53,9 @@ export default Component.extend(EKMixin, {
     suppressScrollX: true
   },
 
-  activeWordIndex: 0,
+  resizeService: service('resize'),
+
+  activeWordIndex: -1,
   _scrolledAheadIndex: 0,
   activeTags: {},
   classNames: ['lxl-container'],
@@ -67,33 +71,36 @@ export default Component.extend(EKMixin, {
   }),
 
   _notifyComplete() {
+    set(this, 'isComplete', true);
     if (isPresent(this.attrs.onComplete)) {
       this.attrs.onComplete();
     }
   },
 
   _notifyPageEnd() {
-    if (isPresent(this.attrs.onPageEnd)) {
+    if (isPresent(this.attrs.onPageEnd) && !get(this, 'isComplete')) {
       this.attrs.onPageEnd();
     }
     this._notifyStoppedWriting();
   },
 
   _notifyPageStart() {
-    if (isPresent(this.attrs.onPageStart)) {
+    if (isPresent(this.attrs.onPageStart) && !get(this, 'isComplete')) {
       this.attrs.onPageStart();
     }
     this._notifyStartedWriting();
   },
 
   _notifyStartedWriting() {
-    if (isPresent(this.attrs.onStartedWriting)) {
+    set(this, 'isWriting', true);
+    if (isPresent(this.attrs.onStartedWriting) && !get(this, 'isComplete')) {
       this.attrs.onStartedWriting();
     }
   },
 
   _notifyStoppedWriting() {
-    if (isPresent(this.attrs.onStoppedWriting)) {
+    set(this, 'isWriting', false);
+    if (isPresent(this.attrs.onStoppedWriting) && !get(this, 'isComplete')) {
       this.attrs.onStoppedWriting();
     }
   },
@@ -102,6 +109,11 @@ export default Component.extend(EKMixin, {
     this._super(...args);
 
     Ember.run.scheduleOnce('afterRender', this, this._didInsertElement);
+  },
+
+  debouncedDidResize() {
+    this._scrollToWord(get(this, 'currentPageFirstWord'));
+    this._processWord();
   },
 
   _didInsertElement() {
@@ -142,7 +154,10 @@ export default Component.extend(EKMixin, {
         if (event.target.id === guid) {
           set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
           set(this, '_scrolledAheadIndex', this._findScrolledAheadIndex());
-          this._processWord(get(this, 'activeWordIndex'));
+          if (!get(this, 'isWriting')) {
+            this._notifyPageStart();
+            this._processWord();
+          }
         }
       });
     }
@@ -202,7 +217,6 @@ export default Component.extend(EKMixin, {
   },
 
   _scrollToWord(word) {
-    const $words = get(this, '$words');
     const $container = this.$();
     const $word = this.$(word);
     const scrollTop = $word.offset().top - $container.offset().top + $container.scrollTop();
@@ -211,7 +225,7 @@ export default Component.extend(EKMixin, {
 
     set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
 
-    this._processWord($words.index($word));
+    this._processWord();
   },
 
   _findScrolledAheadIndex() {
@@ -297,13 +311,12 @@ export default Component.extend(EKMixin, {
     }
   }).readOnly(),
 
-  _processWord(index) {
+  _processWord() {
     const $words = get(this, '$words');
 
     if (isBlank($words)) { return; }
 
-    set(this, 'activeWordIndex', index);
-
+    const index = this.incrementProperty('activeWordIndex');
     const $word = $words.eq(index);
     const nextPageFirstWord = get(this, 'nextPageFirstWord');
 
@@ -316,6 +329,7 @@ export default Component.extend(EKMixin, {
 
     if (pageIsLoaded) {
       this._markPageAsComplete(index);
+      this.decrementProperty('activeWordIndex');
     } else {
       set(this, 'pageLoaded', false);
 
@@ -338,23 +352,23 @@ export default Component.extend(EKMixin, {
     }, get(this, 'tweenDuration'));
   },
 
-  _writeWord($word, index) {
+  _writeWord($word) {
     if ($word.hasClass(lxlTagClass)) {
-      this._executeCustomTag($word.text(), index);
+      this._executeCustomTag($word.text());
     } else if ($word.hasClass(lxlDomClass)) {
-      this._executeDomTag($word, index);
+      this._executeDomTag($word);
     } else if (get(this, 'isInstant')) {
-      this._shortCircuitWord($word, index);
+      this._shortCircuitWord($word);
     } else {
       const letters = $word.text().split('');
 
       $word.html(letters.map((letter) => `<span class="${letterClass}">${letter}</span>`).join('')).css('opacity', 1);
-      this._writeLetter($word, letters.length, 0, index);
+      this._writeLetter($word, letters.length, 0);
     }
   },
 
-  _writeLetter($word, wordLength, characterIndex, wordIndex) {
-    if (get(this, 'isInstant')) { return this._shortCircuitWord($word, wordIndex); }
+  _writeLetter($word, wordLength, characterIndex) {
+    if (get(this, 'isInstant')) { return this._shortCircuitWord($word); }
 
     const cpsRate = get(this, 'cpsRate');
     const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
@@ -363,20 +377,20 @@ export default Component.extend(EKMixin, {
 
     later(() => {
       if (characterIndex + 1 < wordLength) {
-        this._writeLetter($word, wordLength, characterIndex + 1, wordIndex);
+        this._writeLetter($word, wordLength, characterIndex + 1);
       } else {
-        this._processWord(wordIndex + 1);
+        this._processWord();
       }
     }, cpsRate);
   },
 
-  _shortCircuitWord($word, wordIndex) {
+  _shortCircuitWord($word) {
     $word.html($word.text().trim());
     this._tween($word);
-    this._processWord(wordIndex + 1);
+    this._processWord();
   },
 
-  _executeCustomTag(text, index) {
+  _executeCustomTag(text) {
     const container = getOwner(this);
     const { isClosing, isOpening, method, params, tagName } = parseLxlTag(text);
     const activeTags = get(this, `activeTags.${tagName}`) || set(this, `activeTags.${tagName}`, Ember.A());
@@ -387,14 +401,14 @@ export default Component.extend(EKMixin, {
     }
 
     tag[method](this, params).then(() => {
-      this._processWord(index + 1);
+      this._processWord();
     });
   },
 
-  _executeDomTag($tag, index) {
+  _executeDomTag($tag) {
     this._tween($tag);
 
-    this._processWord(index + 1);
+    this._processWord();
   },
 
   _tween($element) {
