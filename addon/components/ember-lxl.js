@@ -256,7 +256,7 @@ export default Component.extend(EKMixin, ResizeAware, {
 
   _findNextPageFirstWord() {
     const wordElements = get(this, 'wordElements');
-    const $container = this.$().parent();
+    const $container = this.$();
     const offsetBottom = $container.offset().top + $container.height();
 
     return wordElements.find((element) => {
