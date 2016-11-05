@@ -346,6 +346,8 @@ export default Component.extend(EKMixin, ResizeAware, {
 
   _markPageAsComplete() {
     later(() => {
+      if (get(this, 'isDestroyed')) { return; }
+
       set(this, 'pageLoaded', true);
 
       if (!get(this, 'instant')) {
