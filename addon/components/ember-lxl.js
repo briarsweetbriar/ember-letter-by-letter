@@ -7,7 +7,7 @@ import {
   keyDown,
   EKMixin
 } from 'ember-keyboard';
-import ResizeAware from 'ember-resize/mixins/resize-aware';
+import ResizeAware from 'ember-letter-by-letter/mixins/resize-aware';
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
@@ -37,7 +37,6 @@ const {
   }
 } = Ember;
 
-const { inject: { service } } = Ember;
 const { run: { later } } = Ember;
 const { or } = computed;
 
@@ -51,8 +50,6 @@ export default Component.extend(EKMixin, ResizeAware, {
   scrollOptions: {
     suppressScrollX: true
   },
-
-  resizeService: service('resize'),
 
   activeWordIndex: -1,
   _scrolledAheadIndex: 0,
@@ -110,7 +107,7 @@ export default Component.extend(EKMixin, ResizeAware, {
     Ember.run.scheduleOnce('afterRender', this, this._didInsertElement);
   },
 
-  debouncedDidResize() {
+  didResize() {
     this._scrollToWord(get(this, 'currentPageFirstWord'));
 
     const nextPageFirstWord = set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
@@ -382,6 +379,8 @@ export default Component.extend(EKMixin, ResizeAware, {
     this._tween($letter);
 
     later(() => {
+      if (get(this, 'isDestroyed')) { return; }
+
       if (characterIndex + 1 < wordLength) {
         this._writeLetter($word, wordLength, characterIndex + 1);
       } else {
