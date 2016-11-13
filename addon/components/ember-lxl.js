@@ -7,7 +7,7 @@ import {
   keyDown,
   EKMixin
 } from 'ember-keyboard';
-import ResizeAware from 'ember-letter-by-letter/mixins/resize-aware';
+import ResizeAware from 'ember-resize-for-addons';
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
