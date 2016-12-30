@@ -123,7 +123,7 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   });
 
   this.render(hbs`
-    <div style="width: 250px; height: 50px; font-family: DejaVu Serif; font-size: 18px;">
+    <div style="width: 250px; height: 40px; font-family: DejaVu Serif; font-size: 18px;">
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
         cps=10000000000
