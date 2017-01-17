@@ -74,6 +74,7 @@ export default Component.extend(EKMixin, ResizeAware, {
   },
 
   _notifyPageEnd() {
+    set(this, 'pageLoaded', true);
     if (isPresent(this.attrs.onPageEnd) && !get(this, 'isComplete')) {
       this.attrs.onPageEnd();
     }
@@ -81,6 +82,7 @@ export default Component.extend(EKMixin, ResizeAware, {
   },
 
   _notifyPageStart() {
+    set(this, 'pageLoaded', false);
     if (isPresent(this.attrs.onPageStart) && !get(this, 'isComplete')) {
       this.attrs.onPageStart();
     }
@@ -108,8 +110,6 @@ export default Component.extend(EKMixin, ResizeAware, {
   },
 
   didResize() {
-    this._scrollToWord(get(this, 'currentPageFirstWord'));
-
     const nextPageFirstWord = set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
     const nextPageFirstWordIndex = get(this, '$words').index(nextPageFirstWord);
     const activeWordIndex = get(this, 'activeWordIndex');
@@ -118,7 +118,8 @@ export default Component.extend(EKMixin, ResizeAware, {
       this.incrementProperty('activeWordIndex');
       this._undoPreviousWord();
       this._markPageAsComplete();
-    } else if (nextPageFirstWordIndex > activeWordIndex) {
+    } else if (nextPageFirstWordIndex > activeWordIndex && get(this, 'pageLoaded')) {
+      this._notifyPageStart();
       this._doNextWord();
     }
   },
@@ -344,8 +345,6 @@ export default Component.extend(EKMixin, ResizeAware, {
   _markPageAsComplete() {
     later(() => {
       if (get(this, 'isDestroyed')) { return; }
-
-      set(this, 'pageLoaded', true);
 
       if (!get(this, 'instant')) {
         set(this, 'instantWritePage', false);
