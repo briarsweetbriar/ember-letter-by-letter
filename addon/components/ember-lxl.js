@@ -110,11 +110,13 @@ export default Component.extend(EKMixin, ResizeAware, {
   },
 
   didResize() {
+    this._scrollToWord(get(this, 'currentPageFirstWord'));
+
     const nextPageFirstWord = set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
     const nextPageFirstWordIndex = get(this, '$words').index(nextPageFirstWord);
     const activeWordIndex = get(this, 'activeWordIndex');
 
-    if (nextPageFirstWordIndex < activeWordIndex) {
+    if (isPresent(nextPageFirstWord) && nextPageFirstWordIndex < activeWordIndex) {
       this.incrementProperty('activeWordIndex');
       this._undoPreviousWord();
       this._markPageAsComplete();
@@ -183,6 +185,7 @@ export default Component.extend(EKMixin, ResizeAware, {
     const firstWord = $words.first();
 
     this._scrollToWord(firstWord);
+    this._doNextWord();
 
     set(this, 'currentPageFirstWord', firstWord);
   },
@@ -216,6 +219,7 @@ export default Component.extend(EKMixin, ResizeAware, {
     set(this, 'currentPageFirstWord', nextPageFirstWord);
 
     this._scrollToWord(nextPageFirstWord);
+    this._doNextWord();
 
     if (isBlank(nextPageFirstWord)) {
       this._notifyComplete();
@@ -232,8 +236,6 @@ export default Component.extend(EKMixin, ResizeAware, {
     $container.scrollTop(scrollTop);
 
     set(this, 'nextPageFirstWord', this._findNextPageFirstWord());
-
-    this._doNextWord();
   },
 
   _findScrolledAheadIndex() {
