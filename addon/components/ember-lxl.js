@@ -301,10 +301,14 @@ export default Component.extend(EKMixin, ResizeAware, {
         return new RegExp(htmlTagRegex).test(word) ? addClassTo([lxlDomClass, wordClass], word) :
           new RegExp(lxlTagRegex).test(word) ?
           `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>` :
-          `<span class="${wordClass}">${word}</span>`;
+          `<span class="${wordClass}">${this._splitWord(word)}</span>`;
       }).join(' '));
     }
   }).readOnly(),
+
+  _splitWord(word) {
+    return word.split('').map((letter) => `<span class="${letterClass}">${letter}</span>`).join('');
+  },
 
   $words: computed('formattedText', {
     get() {
@@ -366,7 +370,7 @@ export default Component.extend(EKMixin, ResizeAware, {
     } else {
       const letters = $word.text().split('');
 
-      $word.html(letters.map((letter) => `<span class="${letterClass}">${letter}</span>`).join('')).css('opacity', 1);
+      $word.css('opacity', 1);
       this._writeLetter($word, letters.length, 0);
     }
   },
