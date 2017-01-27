@@ -140,11 +140,11 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   assert.equal(this.$('.lxl-word').length, 10, 'it immediately writes all words');
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1' }).length, 17, 'it continues wrapping characters');
+    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1'; }).length, 17, 'it continues wrapping characters');
   }, 350);
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1' }).length, 17, 'it has stopped wrapping characters');
+    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1'; }).length, 17, 'it has stopped wrapping characters');
 
     this.$('.lxl-container').trigger('mouseup');
 
@@ -154,13 +154,13 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
   }, 400);
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1' }).length, 42, 'it has resumed wrapping characters');
+    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1'; }).length, 42, 'it has resumed wrapping characters');
 
     this.$('.lxl-container').trigger('mouseup');
   }, 750);
 
   later(() => {
-    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1' }).length, 52, 'it completes writing');
+    assert.equal(this.$('.lxl-letter').filter(function() { return this.style.opacity === '1'; }).length, 52, 'it completes writing');
 
     this.$('.lxl-container').trigger('mouseup');
   }, 1000);
