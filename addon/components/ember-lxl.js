@@ -16,7 +16,6 @@ const wordClass = 'lxl-word';
 const letterClass = 'lxl-letter';
 
 const htmlTagRegex = '<.*?>';
-const entityRegex = '&.*?;';
 const lxlTagRegex = '\\[\\[.*?\\]\\]';
 
 const {
@@ -300,16 +299,15 @@ export default Component.extend(EKMixin, ResizeAware, {
       return htmlSafe(get(this, 'words').map((word) => {
         // test if the word is actually a tag
         return new RegExp(htmlTagRegex).test(word) ? addClassTo([lxlDomClass, wordClass], word) :
-          new RegExp(entityRegex).test(word) ? `<span class="${lxlDomClass} ${wordClass}">${word}</span>` :
-            new RegExp(lxlTagRegex).test(word) ?
-              `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>` :
-              `<span class="${wordClass}">${this._splitWord(word)}</span>`;
+          new RegExp(lxlTagRegex).test(word) ?
+            `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>` :
+            `<span class="${wordClass}">${this._splitWord(word)}</span>`;
       }).join(' '));
     }
   }).readOnly(),
 
   _splitWord(word) {
-    return word.split('').map((letter) => `<span class="${letterClass}">${letter}</span>`).join('');
+    return word.match(/&.*?;|[^]/g).map((letter) => `<span class="${letterClass}">${letter}</span>`).join('');
   },
 
   $words: computed('formattedText', {
