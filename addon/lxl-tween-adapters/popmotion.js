@@ -2,6 +2,7 @@ import Ember from 'ember';
 import motion from 'ember-popmotion';
 
 const {
+  assign,
   computed,
   get
 } = Ember;
@@ -10,7 +11,8 @@ export default Ember.Object.extend({
   tweens: computed(() => []),
 
   animate($element, values, duration) {
-    values.opacity = values.opacity ? values.opacity : { to: 1, from: 0 };
+    values.opacity = values.opacity ? values.opacity : 1;
+    if (!values.hasOwnProperty) { values = assign({}, values); }
 
     get(this, 'tweens').push(motion.tween({
       values,
