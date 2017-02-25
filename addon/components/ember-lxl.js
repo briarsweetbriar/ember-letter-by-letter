@@ -109,6 +109,38 @@ export default Component.extend(EKMixin, ResizeAware, {
     Ember.run.scheduleOnce('afterRender', this, this._didInsertElement);
   },
 
+  didRender(...args) {
+    this._super(...args);
+
+    const cbs = get(this, 'cbs');
+    const $links = this.$('[data-cb]');
+
+    if (!$links) return;
+
+    $links.each(function() {
+      const $element = Ember.$(this);
+      const name = $element.data('cb');
+
+      $element.on('click', cbs[name]);
+    });
+  },
+
+  willDestroy(...args) {
+    this._super(...args);
+
+    const cbs = get(this, 'cbs');
+    const $links = this.$('[data-cb]');
+
+    if (!$links) return;
+
+    $links.each(function() {
+      const $element = Ember.$(this);
+      const name = $element.data('cb');
+
+      $element.off('click', cbs[name]);
+    });
+  },
+
   didResize() {
     this._scrollToWord(get(this, 'currentPageFirstWord'));
 

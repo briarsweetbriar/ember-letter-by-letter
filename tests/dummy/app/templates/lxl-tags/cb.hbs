@@ -4,15 +4,31 @@
 
 {{format-markdown '```hbs
 {{ember-lxl
-  cbs=(hash alert=alert)
+  cbs=cbs
   text="And wait for it. [[cb alert foo bar]] Boom, there it is!"
 }}
 ```'}}
 
 {{#lxl-container}}
   {{ember-lxl
-    cbs=(hash alert=alert)
+    cbs=cbs
     text="And wait for it. [[cb alert foo bar]] Boom, there it is!"
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">You can also trigger the callbacks through <code>data-cb</code>:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  cbs=cbs
+  text="You can <a data-cb=alert>click me</a>"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    cbs=cbs
+    text="You can <a data-cb=alert>click me</a>, or <a data-cb=alert>click me</a>."
   }}
 {{/lxl-container}}
 
@@ -20,14 +36,14 @@
 
 {{format-markdown '```hbs
 {{ember-lxl
-  cbs=(hash customPause=customPause)
+  cbs=cbs
   text="I am written. [[cb customPause 1000]] I continue writing!"
 }}
 ```'}}
 
 {{#lxl-container}}
   {{ember-lxl
-    cbs=(hash customPause=customPause)
+    cbs=cbs
     text="I am written. [[cb customPause 1000]] I continue writing!"
   }}
 {{/lxl-container}}
