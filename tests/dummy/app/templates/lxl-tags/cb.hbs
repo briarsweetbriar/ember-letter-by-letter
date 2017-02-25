@@ -1,0 +1,33 @@
+<h3><code>cb</code></h3>
+
+<p class="margin-top"><code>cb</code> will execute the specified callback, passing in the provided arguments:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  cbs=(hash alert=alert)
+  text="And wait for it. [[cb alert foo bar]] Boom, there it is!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    cbs=(hash alert=alert)
+    text="And wait for it. [[cb alert foo bar]] Boom, there it is!"
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">If you return a Promise, it'll wait until the Promise resolves before proceeding:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  cbs=(hash customPause=customPause)
+  text="I am written. [[cb customPause 1000]] I continue writing!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    cbs=(hash customPause=customPause)
+    text="I am written. [[cb customPause 1000]] I continue writing!"
+  }}
+{{/lxl-container}}

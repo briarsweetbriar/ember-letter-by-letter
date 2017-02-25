@@ -24,6 +24,7 @@ Router.map(function() {
     this.route('tween-rate');
     this.route('tween-effect');
     this.route('pause');
+    this.route('cb');
   });
   this.route('lxl-tween-adapters');
 });
