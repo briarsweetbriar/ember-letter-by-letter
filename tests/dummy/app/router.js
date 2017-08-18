@@ -9,9 +9,9 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('installation');
   this.route('usage', function() {
-    this.route('cps');
-    this.route('tween-rate');
-    this.route('tween-effect');
+    this.route('rate');
+    this.route('duration');
+    this.route('effect');
     this.route('keys');
     this.route('callbacks');
     this.route('instant');
@@ -19,10 +19,10 @@ Router.map(function() {
   });
   this.route('lxl-tags', function() {
     this.route('custom');
-    this.route('cps');
+    this.route('rate');
     this.route('instant');
-    this.route('tween-rate');
-    this.route('tween-effect');
+    this.route('duration');
+    this.route('effect');
     this.route('pause');
     this.route('cb');
   });

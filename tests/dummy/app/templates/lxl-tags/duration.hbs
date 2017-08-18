@@ -1,0 +1,43 @@
+<h3><code>duration</code></h3>
+
+<p class="margin-top"><code>duration</code> changes the rate of the tween effect:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default rate. [[duration 150]]And slow rate. . . ."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default rate. [[duration 150]]And slow rate. . . ."
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">If you use an opening tag, then you can return the <code>duration</code> to its previous value with a closing tag:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default rate. [[#duration 10]]Fast rate! [[#duration 150]]Super slow...[[/duration]] Return to fast!!![[/duration]] Return to initial rate."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default rate. [[#duration 10]]Fast rate! [[#duration 150]]Super slow...[[/duration]] Return to fast!!![[/duration]] Return to initial rate."
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">You can also change the <code>duration</code> relative to the current <code>duration</code> by using mathmatical operators, including <code>*</code>, <code>/</code>, <code>+</code>, <code>-</code>, <code>%</code>:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default rate. [[duration *15]]Times 15!!! [[duration +50]]Plus another 50!!!! [[duration -25]]Minus 25!!!? [[duration /5]]Divided by 5..."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default rate. [[duration *15]]Times 15!!! [[duration +50]]Plus another 50!!!! [[duration -25]]Minus 25!!!? [[duration /5]]Divided by 5..."
+  }}
+{{/lxl-container}}

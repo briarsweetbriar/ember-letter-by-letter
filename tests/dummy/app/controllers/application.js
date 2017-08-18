@@ -16,17 +16,15 @@ export default Controller.extend({
       route: 'callbacks',
       name: 'Callbacks'
     }, {
+      route: 'duration'
+    }, {
+      route: 'effect'
+    }, {
       route: 'instant'
     }, {
+      route: 'rate'
+    }, {
       route: 'scrollable'
-    }, {
-      route: 'cps'
-    }, {
-      route: 'tween-rate',
-      name: 'tweenRate'
-    }, {
-      route: 'tween-effect',
-      name: 'tweenEffect'
     }, {
       route: 'keys'
     }]
@@ -36,17 +34,17 @@ export default Controller.extend({
       route: 'custom',
       name: '*Custom'
     }, {
+      route: 'cb',
+    }, {
+      route: 'duration',
+    }, {
+      route: 'effect',
+    }, {
       route: 'instant'
     }, {
       route: 'pause'
     }, {
-      route: 'cps'
-    }, {
-      route: 'tween-rate',
-    }, {
-      route: 'tween-effect',
-    }, {
-      route: 'cb',
+      route: 'rate'
     }]
   }, {
     route: 'lxl-tween-adapters'

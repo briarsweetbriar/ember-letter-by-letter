@@ -8,7 +8,7 @@
 {{ember-lxl
   text="I use anime.js!"
   tweenLibrary="animejs"
-  tweenEffect=(hash translateY=20)
+  effect=(hash translateY=20)
 }}
 ```'}}
 
@@ -16,7 +16,7 @@
   {{ember-lxl
     text="I use anime.js!"
     tweenLibrary="animejs"
-    tweenEffect=(hash translateY=20)
+    effect=(hash translateY=20)
   }}
 {{/lxl-container}}
 
@@ -24,7 +24,7 @@
 {{ember-lxl
   text="I use popmotion.js!"
   tweenLibrary="popmotion"
-  tweenEffect=(hash x=(hash to=0 from=100))
+  effect=(hash x=(hash to=0 from=100))
 }}
 ```'}}
 
@@ -32,7 +32,7 @@
   {{ember-lxl
     text="I use popmotion.js!"
     tweenLibrary="popmotion"
-    tweenEffect=(hash x=(hash to=0 from=100))
+    effect=(hash x=(hash to=0 from=100))
   }}
 {{/lxl-container}}
 
@@ -40,7 +40,7 @@
 {{ember-lxl
   text="I use velocity.js!"
   tweenLibrary="velocity"
-  tweenEffect=(hash translateY=50)
+  effect=(hash translateY=50)
 }}
 ```'}}
 
@@ -48,14 +48,14 @@
   {{ember-lxl
     text="I use velocity.js!"
     tweenLibrary="velocity"
-    tweenEffect=(hash translateY=50)
+    effect=(hash translateY=50)
   }}
 {{/lxl-container}}
 
 {{format-markdown '```hbs
 {{ember-lxl
   text="By default, I use jquery (not jquery-ui)! And look, I only fade in. . . . Other animation effects do not work"
-  tweenEffect=(hash x=(hash to=0 from=100))
+  effect=(hash x=(hash to=0 from=100))
 }}
 ```'}}
 
@@ -63,7 +63,7 @@
   {{ember-lxl
     text="By default, I use jquery (not jquery-ui)! And look, I only fade in. . . . Other animation effects do not work"
     tweenLibrary="jquery"
-    tweenEffect=(hash x=(hash to=0 from=100))
+    effect=(hash x=(hash to=0 from=100))
   }}
 {{/lxl-container}}
 

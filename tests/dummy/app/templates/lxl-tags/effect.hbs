@@ -1,0 +1,29 @@
+<h3><code>effect</code></h3>
+
+<p class="margin-top"><code>effect</code> changes the effect that the tween animates:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default effect. [[effect (hash x=(hash to=0 from=150))]]And new effect!!!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default effect. [[effect (hash x=(hash to=0 from=150))]]And new effect!!!"
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">If you use an opening tag, then you can return the <code>duration</code> to its previous value with a closing tag:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default effect. [[#effect (hash x=(hash to=0 from=150))]]And new effect!!![[/effect]] And back to normal."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default effect. [[#effect (hash x=(hash to=0 from=150))]]And new effect!!![[/effect]] And back to normal."
+  }}
+{{/lxl-container}}

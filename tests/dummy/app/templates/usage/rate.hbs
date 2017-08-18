@@ -1,0 +1,43 @@
+<h3><code>rate</code></h3>
+
+<p class="margin-top"><code>rate</code> determines how many characters are written per second. Higher numbers are faster, as more characters are written each second:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use the default rate of 25 milliseconds."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use the default rate of 25 milliseconds."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  rate=100
+  text="I use a fast rate!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    rate=100
+    text="I use a fast rate!"
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  rate=10
+  text="I use a slow rate. . . ."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    rate=10
+    text="I use a slow rate. . . ."
+  }}
+{{/lxl-container}}

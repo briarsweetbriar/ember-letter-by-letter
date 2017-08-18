@@ -1,0 +1,43 @@
+<h3><code>duration</code></h3>
+
+<p class="margin-top"><code>duration</code> determines how quickly each character is animated. Higher numbers are slower, as they represent more milliseconds:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use the default duration of 25 milliseconds."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use the default duration of 25 milliseconds."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  duration=10
+  text="I use a fast duration!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    duration=10
+    text="I use a fast duration!"
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  duration=100
+  text="I use a slow duration. . . ."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    duration=100
+    text="I use a slow duration. . . ."
+  }}
+{{/lxl-container}}

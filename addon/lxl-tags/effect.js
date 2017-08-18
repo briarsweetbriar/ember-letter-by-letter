@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { LXLTag } from 'ember-letter-by-letter';
-import calculateWithModifier from 'ember-letter-by-letter/utils/calculate-with-modifier';
 
 const {
   get,
@@ -11,11 +10,12 @@ const { RSVP: { resolve } } = Ember;
 
 export default LXLTag.extend({
   /**
-    Called when a tag is opening, such as ((#cps))
+    Called when a tag is opening, such as ((#effect))
 
     @method open
     @param {Object} lxlContainer
     @param {Array} params
+
     @return {Promise}
   */
 
@@ -24,35 +24,36 @@ export default LXLTag.extend({
   },
 
   /**
-    Called when a tag is neither opening nor closing, such as ((cps))
+    Called when a tag is neither opening nor closing, such as ((effect))
 
     @method execute
     @param {Object} lxlContainer
     @param {Array} params
+
     @return {Promise}
   */
 
   execute(lxlContainer, params) {
-    const initialCps = parseFloat(get(lxlContainer, 'cps'));
-    const newCps = calculateWithModifier(initialCps, params[0]);
+    const initialEffect = get(lxlContainer, 'effect');
 
-    set(lxlContainer, 'cps', newCps);
-    set(this, 'initialCps', initialCps);
+    set(lxlContainer, 'effect', params[0]);
+    set(this, 'initialEffect', initialEffect);
 
     return resolve();
   },
 
   /**
-    Called when a tag is closing, such as ((/cps))
+    Called when a tag is closing, such as ((/effect))
 
     @method close
     @param {Object} lxlContainer
     @param {Array} params
+
     @return {Promise}
   */
 
   close(lxlContainer) {
-    set(lxlContainer, 'cps', get(this, 'initialCps'));
+    set(lxlContainer, 'effect', get(this, 'initialEffect'));
 
     return resolve();
   }

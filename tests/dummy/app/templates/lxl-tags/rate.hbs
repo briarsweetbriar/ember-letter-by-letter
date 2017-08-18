@@ -1,0 +1,43 @@
+<h3><code>rate</code></h3>
+
+<p class="margin-top"><code>rate</code> changes the characters-per-second written by <code>ember-lxl</code>:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default speed. [[rate 150]]And now sonic speed!!!!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default speed. [[rate 150]]And now sonic speed!!!!"
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">If you use an opening tag, then you can return the rate to its previous value with a closing tag:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default speed. [[#rate 150]]Super fast!!! [[#rate 5]]Super slow...[[/rate]] Return to fast!!![[/rate]] Return to initial speed."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default speed. [[#rate 150]]Super fast!!! [[#rate 5]]Super slow...[[/rate]] Return to fast!!![[/rate]] Return to initial speed."
+  }}
+{{/lxl-container}}
+
+<p class="margin-top">You can also change the rate relative to the current rate by using mathmatical operators, including <code>*</code>, <code>/</code>, <code>+</code>, <code>-</code>, <code>%</code>:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="Default speed. [[rate *15]]Times 15!!! [[rate +50]]Plus another 50!!!! [[rate -25]]Minus 25!!!? [[rate /5]]Divided by 5..."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="Default speed. [[rate *15]]Times 15!!! [[rate +50]]Plus another 50!!!! [[rate -25]]Minus 25!!!? [[rate /5]]Divided by 5..."
+  }}
+{{/lxl-container}}

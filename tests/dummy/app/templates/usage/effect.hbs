@@ -1,0 +1,43 @@
+<h3><code>effect</code></h3>
+
+<p class="margin-top"><code>effect</code> sets the effect used to animate each character in. Consult the {{#link-to "lxl-tween-adapters"}}lxl-tween-adapters{{/link-to}} section for more information! In the below examples, we're using the Popmotion.js adapter, but by default, <code>ember-letter-by-letter</code> simply uses jquery's limited feature set:</p>
+
+{{format-markdown '```hbs
+{{ember-lxl
+  text="I use the default effect, which simply changes opacity from 0 to 1."
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    text="I use the default effect, which simply changes opacity from 0 to 1."
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  effect=(hash x=(hash to=0 from=100))
+  text="I also change the x coordinate!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    effect=(hash x=(hash to=0 from=100))
+    text="I also change the x coordinate!"
+  }}
+{{/lxl-container}}
+
+{{format-markdown '```hbs
+{{ember-lxl
+  effect=(hash opacity=(hash to=0.5 from=0))
+  text="I overwrite the default opacity change!"
+}}
+```'}}
+
+{{#lxl-container}}
+  {{ember-lxl
+    effect=(hash opacity=(hash to=0.5 from=0))
+    text="I overwrite the default opacity change!"
+  }}
+{{/lxl-container}}

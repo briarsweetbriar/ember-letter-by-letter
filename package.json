@@ -1,6 +1,6 @@
 {
   "name": "ember-letter-by-letter",
-  "version": "0.3.16",
+  "version": "0.4.0",
   "description": "Write text letter by letter with Ember.js.",
   "keywords": [
     "ember-addon"
@@ -22,7 +22,7 @@
     "ember-cli-htmlbars": "^2.0.1",
     "ember-get-config": "^0.2.2",
     "ember-keyboard": "^2.1.10",
-    "ember-resize-for-addons": "0.0.1"
+    "ember-resize-for-addons": "^0.0.1"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
@@ -42,8 +42,9 @@
     "ember-cli-uglify": "^1.2.0",
     "ember-cli-velocity": "^0.4.0",
     "ember-disable-prototype-extensions": "^1.1.2",
-    "ember-expanding-sidebars": "0.0.5",
+    "ember-expanding-sidebars": "^0.0.7",
     "ember-export-application-global": "^2.0.0",
+    "ember-i18n": "^5.0.2",
     "ember-load-initializers": "^1.0.0",
     "ember-perfect-scrollbar": "0.0.4",
     "ember-popmotion": "^5.0.11-c",

@@ -44,9 +44,9 @@ export default Component.extend(EKMixin, ResizeAware, {
   layout,
 
   keys: [],
-  cps: 25,
-  tweenEffect: {},
-  tweenRate: 25,
+  rate: 25,
+  effect: {},
+  duration: 25,
   scrollOptions: {
     suppressScrollX: true
   },
@@ -304,15 +304,15 @@ export default Component.extend(EKMixin, ResizeAware, {
     }
   }).readOnly(),
 
-  cpsRate: computed('cps', {
+  cps: computed('rate', {
     get() {
-      return second / get(this, 'cps');
+      return second / get(this, 'rate');
     }
   }),
 
-  tweenDuration: computed('cpsRate', 'tweenRate', 'isInstant', {
+  tweenDuration: computed('cps', 'duration', 'isInstant', {
     get() {
-      return get(this, 'isInstant') ? 0 : get(this, 'cpsRate') * get(this, 'tweenRate');
+      return get(this, 'isInstant') ? 0 : get(this, 'cps') * get(this, 'duration');
     }
   }),
 
@@ -410,7 +410,7 @@ export default Component.extend(EKMixin, ResizeAware, {
   _writeLetter($word, wordLength, characterIndex) {
     if (get(this, 'isInstant')) { return this._shortCircuitWord($word); }
 
-    const cpsRate = get(this, 'cpsRate');
+    const cps = get(this, 'cps');
     const $letter = $word.find(`span.${letterClass}:eq(${characterIndex})`);
 
     this._tween($letter);
@@ -423,7 +423,7 @@ export default Component.extend(EKMixin, ResizeAware, {
       } else {
         this._doNextWord();
       }
-    }, cpsRate);
+    }, cps);
   },
 
   _shortCircuitWord($word) {
@@ -452,13 +452,13 @@ export default Component.extend(EKMixin, ResizeAware, {
 
     later(() => {
       this._doNextWord();
-    }, get(this, 'cpsRate'));
+    }, get(this, 'cps'));
   },
 
   _tween($element) {
-    const { tweenAdapter, tweenEffect, tweenDuration } = getProperties(this, 'tweenAdapter', 'tweenEffect', 'tweenDuration');
+    const { tweenAdapter, effect, tweenDuration } = getProperties(this, 'tweenAdapter', 'effect', 'tweenDuration');
 
-    tweenAdapter.animate($element, tweenEffect, tweenDuration);
+    tweenAdapter.animate($element, effect, tweenDuration);
   },
 
   _undoPreviousWord() {
