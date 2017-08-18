@@ -47,7 +47,7 @@ export default LXLTag.extend({
     @return {Promise}
   */
 
-  close(lxlContainer, params) {
+  close() {
     return resolve;
   }
 });

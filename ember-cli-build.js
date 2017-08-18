@@ -6,7 +6,7 @@ module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
     // Add options here
     stringifyPath: 'markdown',
-    babel: {
+    'ember-cli-babel': {
       includePolyfill: true
     }
   });
