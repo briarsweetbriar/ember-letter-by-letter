@@ -8,9 +8,9 @@ module.exports = {
   env: {
     browser: true
   },
+  rules: {
+  },
   globals: {
     PerfectScrollbar: true
-  },
-  rules: {
   }
 };

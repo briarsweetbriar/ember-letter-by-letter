@@ -127,12 +127,14 @@ test('it pauses once it reaches the bottom of the container', function(assert) {
       {{ember-lxl
         text="This is a really long sentance, but that's totally necessary!"
         rate=10000000000
-        duration=0
+        duration=5
         onComplete=(action completed)
         onPageEnd=(action paused)
         onPageStart=(action resumed)
         onStartedWriting=(action started)
         onStoppedWriting=(action stopped)
+        tweenLibrary="velocity"
+        effect=(hash opacity=1)
       }}
     </div>
   `);
