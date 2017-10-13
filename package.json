@@ -53,6 +53,7 @@
     "ember-source": "~2.15.0",
     "ember-welcome-page": "^3.0.0",
     "foundation-sites": "^6.4.2",
+    "liquid-fire": "^0.28.0",
     "loader.js": "^4.2.3",
     "markdown-code-highlighting": "^0.1.0"
   },
