@@ -1,6 +1,6 @@
 {
   "name": "ember-letter-by-letter",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Write text letter by letter with Ember.js.",
   "keywords": [
     "ember-addon"
@@ -11,7 +11,7 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "https://github.com/null-null-null/ember-letter-by-letter",
+  "repository": "https://github.com/patience-tema-baron/ember-letter-by-letter",
   "scripts": {
     "build": "ember build",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
@@ -62,6 +62,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoUrl": "http://null-null-null.github.io/ember-letter-by-letter/"
+    "demoUrl": "http://patience-tema-baron.github.io/ember-letter-by-letter/"
   }
 }
