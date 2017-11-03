@@ -5,6 +5,8 @@ import addClassTo from 'ember-letter-by-letter/utils/add-class-to';
 import parseLxlTag from 'ember-letter-by-letter/utils/parse-lxl-tag';
 import {
   keyDown,
+  mouseUp,
+  touchEnd,
   EKMixin
 } from 'ember-keyboard';
 import ResizeAware from 'ember-resize-for-addons';
@@ -44,6 +46,7 @@ export default Component.extend(EKMixin, ResizeAware, {
   layout,
 
   keys: [],
+  mustClickSelf: true,
   rate: 25,
   effect: {},
   duration: 25,
@@ -173,9 +176,14 @@ export default Component.extend(EKMixin, ResizeAware, {
   },
 
   _bindPressEvents() {
-    ['mouseUp', 'touchEnd'].forEach((eventName) => {
-      this.on(eventName, this._pressEvent);
-    });
+    if (this.get('mustClickSelf')) {
+      ['mouseUp', 'touchEnd'].forEach((eventName) => {
+        this.on(eventName, this._pressEvent);
+      });
+    } else {
+      this.on(mouseUp('left'), this._pressEvent);
+      this.on(touchEnd(), this._pressEvent);
+    }
   },
 
   _bindKeys() {
@@ -225,6 +233,9 @@ export default Component.extend(EKMixin, ResizeAware, {
   _pressEvent(event) {
     // do nothing on right-click or mouse wheel or combo
     if (event.buttons > 1) { return; }
+
+    // do nothing if clicking link
+    if (event.target.tagName.toLowerCase() === 'a') { return; }
 
     // do nothing if the text contains highlighted text
     if (!window.getSelection().isCollapsed) { return; }
