@@ -234,11 +234,11 @@ export default Component.extend(EKMixin, ResizeAware, {
     // do nothing on right-click or mouse wheel or combo
     if (event.buttons > 1) { return; }
 
-    // do nothing if clicking link
-    if (event.target.tagName.toLowerCase() === 'a') { return; }
-
     // do nothing if the text contains highlighted text
     if (!window.getSelection().isCollapsed) { return; }
+
+    // do nothing if clicking link
+    if (event.target.classList.contains('lxl-letter') && event.target.parentElement.parentElement.tagName.toLowerCase() === 'a') { return; }
 
     this._advanceText(event);
   },
