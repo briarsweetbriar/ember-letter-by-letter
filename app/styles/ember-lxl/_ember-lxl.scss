@@ -8,6 +8,23 @@
     .lxl-dom-element, .lxl-word, .lxl-letter {
       opacity: 0;
     }
+
+    .lxl-tag-wrapper {
+      opacity: 1;
+    }
+
+    a.lxl-tag-wrapper {
+      cursor: pointer;
+    }
+
+    .lxl-tag-wrapper-hidden {
+      opacity: 0;
+    }
+
+    a.lxl-tag-wrapper-hidden {
+      cursor: default;
+      pointer-events: none;
+    }
   }
 
   .lxl-body-bottom-pad {

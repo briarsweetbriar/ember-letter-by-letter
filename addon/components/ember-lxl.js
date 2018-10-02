@@ -13,6 +13,8 @@ import ResizeAware from 'ember-resize-for-addons';
 
 const second = 1000;
 const lxlTagClass = 'lxl-tag';
+const lxlWrapperClass = 'lxl-tag-wrapper';
+const lxlWrapperHiddenClass = 'lxl-tag-wrapper-hidden';
 const lxlDomClass = 'lxl-dom-element';
 const wordClass = 'lxl-word';
 const letterClass = 'lxl-letter';
@@ -125,12 +127,17 @@ export default Component.extend(EKMixin, ResizeAware, {
       const element = $element.get(0);
       const name = $element.data('cb');
       const params = $element.data('cb-params');
-      const cb = () => {
+      const cb = (event) => {
+        if (event.code && ['Enter', 'Space'].indexOf(event.code) === -1) return;
+        event.preventDefault();
+        event.stopPropagation();
+
         cbs[name](...params, element);
       };
 
-      element.addEventListener('click', cb);
-      element.addEventListener('touchend', cb);
+      ['click', 'touchend', 'keyup'].forEach((type) => {
+        element.addEventListener(type, cb);
+      });
     });
   },
 
@@ -344,7 +351,7 @@ export default Component.extend(EKMixin, ResizeAware, {
     const text = `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>`;
 
     if (wrapperTagName && isClosing) return `</${wrapperTagName}>${text}`;
-    else if (wrapperTagName) return `${text}<${wrapperTagName} data-cb=${tagName} data-cb-params=${JSON.stringify(params)}>`;
+    else if (wrapperTagName) return `${text}<${wrapperTagName} class="${wordClass} ${lxlWrapperClass} ${lxlWrapperHiddenClass}" tabindex=0 data-cb=${tagName} data-cb-params=${JSON.stringify(params)}>`;
     else return text;
   },
 
@@ -405,6 +412,9 @@ export default Component.extend(EKMixin, ResizeAware, {
   _writeWord($word) {
     if ($word.hasClass(lxlTagClass)) {
       this._executeCustomTag($word.text());
+    } else if ($word.hasClass(lxlWrapperClass)) {
+      $word.removeClass(lxlWrapperHiddenClass);
+      this._doNextWord();
     } else if ($word.hasClass(lxlDomClass)) {
       this._executeDomTag($word);
     } else if (get(this, 'isInstant')) {

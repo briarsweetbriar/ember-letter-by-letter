@@ -1,6 +1,6 @@
 {
   "name": "ember-letter-by-letter",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Write text letter by letter with Ember.js.",
   "keywords": [
     "ember-addon"
