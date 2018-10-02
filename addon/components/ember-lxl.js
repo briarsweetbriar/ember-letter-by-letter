@@ -126,7 +126,7 @@ export default Component.extend(EKMixin, ResizeAware, {
       const $element = Ember.$(this);
       const element = $element.get(0);
       const name = $element.data('cb');
-      const params = $element.data('cb-params');
+      const params = $element.data('cb-params') || [];
       const cb = (event) => {
         if (event.code && ['Enter', 'Space'].indexOf(event.code) === -1) return;
         event.preventDefault();
