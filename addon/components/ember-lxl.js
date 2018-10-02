@@ -122,25 +122,15 @@ export default Component.extend(EKMixin, ResizeAware, {
 
     $links.each(function() {
       const $element = Ember.$(this);
+      const element = $element.get(0);
       const name = $element.data('cb');
+      const params = $element.data('cb-params');
+      const cb = () => {
+        cbs[name](...params, element);
+      };
 
-      $element.on('click', cbs[name]);
-    });
-  },
-
-  willDestroy(...args) {
-    this._super(...args);
-
-    const cbs = get(this, 'cbs');
-    const $links = this.$('[data-cb]');
-
-    if (!$links) return;
-
-    $links.each(function() {
-      const $element = Ember.$(this);
-      const name = $element.data('cb');
-
-      $element.off('click', cbs[name]);
+      element.addEventListener('click', cb);
+      element.addEventListener('touchend', cb);
     });
   },
 
@@ -340,11 +330,23 @@ export default Component.extend(EKMixin, ResizeAware, {
         // test if the word is actually a tag
         return new RegExp(htmlTagRegex).test(word) ? addClassTo([lxlDomClass, wordClass], word) :
           new RegExp(lxlTagRegex).test(word) ?
-            `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>` :
+            this._generateLxlTag(word) :
             `<span class="${wordClass}">${this._splitWord(word)}</span>`;
       }).join(' '));
     }
   }).readOnly(),
+
+  _generateLxlTag(word) {
+    const container = getOwner(this);
+    const { isClosing, tagName, params } = parseLxlTag(word);
+    const tagInstance = container.lookup(`lxl-tag:${tagName}`).create();
+    const wrapperTagName = tagInstance.tagName;
+    const text = `<span class="${lxlTagClass} ${wordClass}" aria-hidden="true">${word}</span>`;
+
+    if (wrapperTagName && isClosing) return `</${wrapperTagName}>${text}`;
+    else if (wrapperTagName) return `${text}<${wrapperTagName} data-cb=${tagName} data-cb-params=${JSON.stringify(params)}>`;
+    else return text;
+  },
 
   _splitWord(word) {
     return word.match(/&.*?;|[^]/g).map((letter) => `<span class="${letterClass}">${letter}</span>`).join('');
