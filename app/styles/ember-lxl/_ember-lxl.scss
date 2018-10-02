@@ -15,6 +15,10 @@
 
     a.lxl-tag-wrapper {
       cursor: pointer;
+
+      .lxl-letter, .lxl-word {
+        text-decoration: underline !important;
+      }
     }
 
     .lxl-tag-wrapper-hidden {

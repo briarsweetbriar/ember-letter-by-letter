@@ -112,10 +112,6 @@ export default Component.extend(EKMixin, ResizeAware, {
     this._super(...args);
 
     Ember.run.scheduleOnce('afterRender', this, this._didInsertElement);
-  },
-
-  didRender(...args) {
-    this._super(...args);
 
     const cbs = get(this, 'cbs');
     const $links = this.$('[data-cb]');
