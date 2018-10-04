@@ -383,7 +383,7 @@ export default Component.extend(EKMixin, ResizeAware, {
       index >= $words.length ||
       (isPresent(nextPageFirstWord) && index >= $words.index(nextPageFirstWord));
 
-    if (pageIsLoaded) {
+    if ((pageIsLoaded && (!this.get('scrollable') || !this.get('instant'))) || $word.length === 0) {
       this._markPageAsComplete();
       this.decrementProperty('activeWordIndex');
     } else {
